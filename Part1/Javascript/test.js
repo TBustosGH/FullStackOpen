@@ -82,7 +82,7 @@ const object3 = {
 
 //METHODS
 //First way to declare a function
-const sum = (p1, p2) => {
+/*const sum = (p1, p2) => {
     console.log(p1);
     console.log(p2);
     return p1 + p2;
@@ -91,10 +91,10 @@ const sum = (p1, p2) => {
 const result = sum(1, 5);
 console.log(result);
 
-/*const square = p => {
+const square = p => {
     console.log(p);
     return p * p;
-}*/
+}
 
 const square = p => p * p; //Single line method, returns the expresion
 //Example of single line method:
@@ -114,4 +114,53 @@ const average = function(a, b){
 }
 
 const averageResult = average(2, 5);
+*/
 
+
+//OBJECT METHODS & this
+/*const arto = {
+  name: 'Arto Hellas',
+  age: 35,
+  education: 'PhD',
+  greet: function() {
+    console.log('hello, my name is ' + this.name);
+  },
+  doAddition : function(a, b){
+    console.log(a + b);
+  }
+}
+
+arto.greet();  //Prints 'hello, my name is Arto Hellas'
+
+//Add a new method to an object
+arto.GrowOlder = function(){
+    this.age += 1;
+}
+
+console.log(arto.age);  //prints 35
+arto.GrowOlder();  //Incrementing Arto's age by one
+console.log(arto.age);  //prints 36
+
+//Can make references to object methods
+arto.doAddition(3, 5);
+const referenceToDoAddition = arto.doAddition;  //This could cause some errors while using 'this' in an object (so be aware!)
+referenceToDoAddition(20, 2);
+*/
+
+
+//CLASSES
+class Person {
+    constructor(name, age){
+        this.name = name;
+        this.age = age;
+    }
+    greet() {
+        console.log('Hello, my name is ' + this.name);
+    }
+}
+
+const adam = new Person('Adam Ondra', 29);
+adam.greet();
+
+const janja = new Person('Jana Gernbret', 23);
+janja.greet();
