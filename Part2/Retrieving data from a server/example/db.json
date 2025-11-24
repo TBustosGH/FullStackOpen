@@ -1,0 +1,36 @@
+{
+    "notes" : [
+        {
+            "id" : 1,
+            "content" : "HTML is easy",
+            "important" : true
+        },
+        {
+            "id" : 2,
+            "content" : "Browser can execute only Javascript",
+            "important" : false
+        },
+        {
+            "id" : 3,
+            "content" : "GET and POST are the most important methods of HTTP protocol",
+            "important" : true 
+        }
+    ],
+    "foobar": [
+        {
+            "id" : 1,
+            "content" : "Hello World",
+            "important" : true
+        },
+        {
+            "id" : 2,
+            "content" : "Bye bye World",
+            "important" : false
+        },
+        {
+            "id" : 3,
+            "content" : "Cyre como te rompería el orto",
+            "important" : true
+        }
+    ]
+}
