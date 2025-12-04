@@ -1,7 +1,11 @@
 const express = require('express')
+const morgan = require('morgan')
+
 const app = express()
 
 app.use(express.json())
+morgan.token('PostData', (request, response) => JSON.stringify(request.body))
+app.use(morgan(':method :url :status :res[content-length] - :response-time ms /// :PostData'))
 
 let phonebook = [
     {   "id": 1,  "name": "Arto Hellas",    "number": "040-123456"    },
@@ -86,9 +90,9 @@ app.post('/api/persons', (request, response) => {
         "name" : body.name,
         "number" : String(body.number)
     }
-    console.log('Person: ', person)
+    //console.log('Person: ', person)
     phonebook = phonebook.concat(person)
-    console.log('Phonebook: ', phonebook)
+    //console.log('Phonebook: ', phonebook)
     response.json(phonebook)
 })
 
