@@ -1,10 +1,12 @@
 const express = require('express')
 const cors = require('cors')
-
+const morgan = require('morgan')
 const app = express()
 
 app.use(express.json())
+app.use(express.static('dist'))
 app.use(cors())
+app.use(morgan('tiny'))
 
 let notes = [
     {   id: 1,  content: "HTML is easy",    important: true },
@@ -25,7 +27,7 @@ const generateID = () => {
     const maxId = notes.length > 0
     ? Math.max(...notes.map(n => n.id))
     : 0
-    console.log('MaxID', maxId)
+    //console.log('MaxID', maxId)
     return maxId + 1
 }
 
@@ -44,10 +46,10 @@ app.post('/api/notes', (request, response) => {
         important : Boolean(body.important) || false
     }
 
-    console.log('NOTE: ', note)
+    //console.log('NOTE: ', note)
 
     notes = notes.concat(note)
-    console.log('Notes: ', notes)
+    //console.log('Notes: ', notes)
 
     response.json(note)
 })
