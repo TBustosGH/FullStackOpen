@@ -57,7 +57,7 @@ const PersonForm = ({   persons, setPersons, newName, setNewName, newNumber, set
                         setNewNumber('')
 
                         setErrorMessage(
-                            `Unable to change ${personObject.name}'s number.\n${personObject.name}'s information has been deleted from the server.\n${error}`
+                            `Unable to change ${personObject.name}'s number.\n${personObject.name}'s information has been deleted from the server.\nError message: ${error}`
                         )
                         setTimeout(() => {
                             setErrorMessage(null)
