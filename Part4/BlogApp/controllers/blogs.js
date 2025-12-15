@@ -1,4 +1,5 @@
 const blogsRouter = require('express').Router()
+const { request } = require('express')
 const Blog = require('../models/blog')
 
 
@@ -7,6 +8,14 @@ blogsRouter.get('/', (request, response, next) => {
         .find({})
         .then(blogs => {
             response.json(blogs)
+        })
+        .catch(error => next(error))
+})
+
+blogsRouter.get('/:id', (request, response, next) => {
+    Blog.findById(request.params.id)
+        .then(blog => {
+            response.json(blog)
         })
         .catch(error => next(error))
 })
