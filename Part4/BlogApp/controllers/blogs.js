@@ -29,6 +29,8 @@ blogsRouter.post('/', (request, response, next) => {
         response.status(400).json({ error: 'No author given' })
     else if (!blog.url)
         response.status(400).json({ error: 'No url given' })
+    else if (!blog.likes)
+        blog.likes = 0
 
     blog
         .save()
