@@ -250,7 +250,7 @@ test('Blogs without likes field will have 0 likes by default', async () => {
     assert.deepStrictEqual(lastBlog.likes, 0)
 })
 //4-12
-describe.only('DB responds with 400 bad request', () => {
+describe('DB responds with 400 bad request', () => {
     const blogWithoutTitle = {
         author: 'Carlos Villagran',
         url: 'unnecesary',
