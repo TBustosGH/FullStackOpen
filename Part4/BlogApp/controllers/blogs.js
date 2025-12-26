@@ -1,7 +1,21 @@
 const blogsRouter = require('express').Router()
 const { request } = require('express')
 const Blog = require('../models/blog')
+const User = require('../models/user')
+const jwt = require('jsonwebtoken')
 
+
+//METHODS
+const getTokenFrom = request => {
+    const authorization = request.get('authorization')
+    if (authorization && authorization.startsWith('Bearer ')) {
+        return authorization.replace('Bearer ', '')
+    }
+    return null
+}
+
+
+//API ROUTES
 
 blogsRouter.get('/', (request, response, next) => {
     Blog
@@ -20,24 +34,30 @@ blogsRouter.get('/:id', (request, response, next) => {
         .catch(error => next(error))
 })
 
-blogsRouter.post('/', (request, response, next) => {
-    const blog = new Blog(request.body)
+blogsRouter.post('/', async (request, response, next) => {
+    const body = request.body
+    const decodedToken = jwt.verify(getTokenFrom(request), process.env.SECRET)
+    if (!decodedToken) {
+        return response.status(401).json({ error: 'invalid token' })
+    }
+    const user = await User.findById(decodedToken.id)
 
-    if(!blog.title)
+    if(!body.title)
         response.status(400).json({ error: 'No title given' })
-    else if (!blog.author)
+    else if (!body.author)
         response.status(400).json({ error: 'No author given' })
-    else if (!blog.url)
-        response.status(400).json({ error: 'No url given' })
-    else if (!blog.likes)
-        blog.likes = 0
 
-    blog
-        .save()
-        .then(result => {
-            response.status(201).json(result)
-        })
-        .catch(error => next(error))
+
+    const blog = new Blog({
+        title: body.title,
+        author: body.author,
+        url: body.url || 'No url given',
+        likes: body.likes || 0
+    })
+
+    const savedBlog = await blog.save()
+
+    response.status(201).json(savedBlog)
 })
 
 
