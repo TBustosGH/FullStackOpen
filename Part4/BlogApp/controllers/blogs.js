@@ -37,6 +37,7 @@ blogsRouter.get('/:id', (request, response, next) => {
 blogsRouter.post('/', async (request, response, next) => {
     const body = request.body
     const decodedToken = jwt.verify(getTokenFrom(request), process.env.SECRET)
+
     if (!decodedToken) {
         return response.status(401).json({ error: 'invalid token' })
     }
@@ -44,18 +45,17 @@ blogsRouter.post('/', async (request, response, next) => {
 
     if(!body.title)
         response.status(400).json({ error: 'No title given' })
-    else if (!body.author)
-        response.status(400).json({ error: 'No author given' })
-
 
     const blog = new Blog({
         title: body.title,
-        author: body.author,
+        author: user.id,
         url: body.url || 'No url given',
         likes: body.likes || 0
     })
-
+    
     const savedBlog = await blog.save()
+    user.blogs = user.blogs.concat(savedBlog._id)
+    await user.save()
 
     response.status(201).json(savedBlog)
 })
