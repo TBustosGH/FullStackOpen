@@ -19,7 +19,7 @@ const getTokenFrom = request => {
 
 blogsRouter.get('/', (request, response, next) => {
     Blog
-        .find({})
+        .find({}).populate('user')
         .then(blogs => {
             response.json(blogs)
         })
@@ -27,7 +27,7 @@ blogsRouter.get('/', (request, response, next) => {
 })
 
 blogsRouter.get('/:id', (request, response, next) => {
-    Blog.findById(request.params.id)
+    Blog.findById(request.params.id).populate('user')
         .then(blog => {
             response.json(blog)
         })
