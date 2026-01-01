@@ -3,23 +3,14 @@ const { request } = require('express')
 const Blog = require('../models/blog')
 const User = require('../models/user')
 const jwt = require('jsonwebtoken')
-
-
-//METHODS
-const getTokenFrom = request => {
-    const authorization = request.get('authorization')
-    if (authorization && authorization.startsWith('Bearer ')) {
-        return authorization.replace('Bearer ', '')
-    }
-    return null
-}
+const middleware = require('../utils/middleware')
 
 
 //API ROUTES
 
 blogsRouter.get('/', (request, response, next) => {
     Blog
-        .find({}).populate('user')
+        .find({}).populate('author', { username: 1, name: 1, id: 1 })
         .then(blogs => {
             response.json(blogs)
         })
@@ -27,21 +18,19 @@ blogsRouter.get('/', (request, response, next) => {
 })
 
 blogsRouter.get('/:id', (request, response, next) => {
-    Blog.findById(request.params.id).populate('user')
+    Blog.findById(request.params.id).populate('author')
         .then(blog => {
             response.json(blog)
         })
         .catch(error => next(error))
 })
 
-blogsRouter.post('/', async (request, response, next) => {
+blogsRouter.post('/', middleware.userExtractor, async (request, response, next) => {
     const body = request.body
-    const decodedToken = jwt.verify(getTokenFrom(request), process.env.SECRET)
-
-    if (!decodedToken) {
-        return response.status(401).json({ error: 'invalid token' })
+    const user = request.user
+    if(!user) {
+        return response.status(400).json({ error: 'invalid token' })
     }
-    const user = await User.findById(decodedToken.id)
 
     if(!body.title)
         response.status(400).json({ error: 'No title given' })
@@ -58,6 +47,27 @@ blogsRouter.post('/', async (request, response, next) => {
     await user.save()
 
     response.status(201).json(savedBlog)
+})
+blogsRouter.delete('/:id', middleware.userExtractor, async (request, response, next) => {
+    //blog to delete info
+    const blogId = request.params.id
+    const blog = await Blog.findById(blogId)
+    if (!blog) {
+        return response.status(400).json({ error: 'blog not found' })
+    }
+    //authorization info
+    const user = request.user   //`request.user` id defined in a middleware
+    if(!user) {
+        return response.status(400).json({ error: 'invalid token' })
+    }
+
+    //Delete operation
+    if(blog.author.toString() === user.id.toString()) {
+        await Blog.findByIdAndDelete(blogId)
+        response.status(204).end()
+    } else {
+        response.status(400).json({ error: 'Blog must be yours to delete' })
+    }
 })
 
 
