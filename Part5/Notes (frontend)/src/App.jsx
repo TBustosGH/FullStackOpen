@@ -51,7 +51,7 @@ const App = () => {
       setNotes(notes.concat(returnedNote))
       setNewNote('')
     } catch (exception) {
-      alert(`Unable to add the nore\nError message: ${exception}`)
+      alert(`Unable to add the note\nError message: ${exception}`)
     }
   }
 
