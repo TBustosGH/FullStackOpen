@@ -70,7 +70,11 @@ const App = () => {
     </form>
   )
   //LOGOUT
-  
+  const handleLogout = async () => {
+    window.localStorage.removeItem('loggedBlogappUser')
+    blogService.setToken(null)
+    setUser(null)
+  }
 
 
   if(user === null) {
@@ -85,7 +89,7 @@ const App = () => {
   return (
     <div>
       <h2>blogs</h2>
-      <p>{user.name} logged-in</p>
+      <p>{user.name} logged-in  <button onClick={handleLogout}>logout</button></p>
       {blogs.map(blog => 
         <Blog key={blog.id} blog={blog}/>
       )}
