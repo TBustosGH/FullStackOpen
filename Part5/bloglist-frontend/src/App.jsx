@@ -3,6 +3,8 @@ import Blog from './components/Blog'
 import blogService from './services/blogs'
 import loginService from './services/login'
 import login from './services/login'
+import Notification from './components/Notification'
+
 
 const App = () => {
   //Blogs state
@@ -14,11 +16,21 @@ const App = () => {
   //Blog form states
   const [newBlog, setNewBlog] = useState('')
   const [newBlogUrl, setNewBlogUrl] = useState('')
+  //Message states
+  const [Message , setMessage] = useState(null)
+
 
   //Get all notes
   useEffect(() => {
     blogService.getAll().then(blogs => {
       setBlogs(blogs)
+    })
+    .catch(error => {
+      setMessage('Unable to get blogs from the server')
+      setTimeout(() =>{
+        setMessage(null)
+      }, 5000)
+      console.log('Error code: ', error)
     })
   }, [])
   //Checks if there's a logged user in local storage
@@ -47,8 +59,17 @@ const App = () => {
       setUser(user)
       setUsername('')
       setPassword('')
+
+      setMessage('Successfully logged in')
+      setTimeout(() =>{
+        setMessage(null)
+      }, 5000)
     } catch(exception) {
       console.log(`an error has ocurred!!!\n${exception}`)
+      setMessage('Wrong username or password')
+      setTimeout(() =>{
+        setMessage(null)
+      }, 5000)
     }
   }
   const loginForm = () => (
@@ -60,6 +81,7 @@ const App = () => {
         value={username}
         name='Username'
         onChange={({ target }) => setUsername(target.value)}
+        required
         />
       </div>
       <div>
@@ -69,6 +91,7 @@ const App = () => {
         value={password}
         name='Password'
         onChange={({ target }) => setPassword(target.value)}
+        required
         />
       </div>
       <button type='submit'>Login</button>
@@ -79,13 +102,17 @@ const App = () => {
     window.localStorage.removeItem('loggedBlogappUser')
     blogService.setToken(null)
     setUser(null)
+
+    setMessage('Successfully logged out')
+    setTimeout(() =>{
+      setMessage(null)
+    }, 5000)
   }
   //Blog form
   const addBlog = async (event) => {
     event.preventDefault()
     const blogObject = {
       title: newBlog,
-      author: 'mazimo',
       url: newBlogUrl || 'No url provided'
     }
 
@@ -97,7 +124,17 @@ const App = () => {
       setBlogs(updatedBlogs)
       setNewBlog('')
       setNewBlogUrl('')
+
+      setMessage('Your new blog has been properly posted!')
+      setTimeout(() =>{
+        setMessage(null)
+      }, 5000)
     } catch(exception) {
+      setMessage('There was an error at posting your blog')
+      setTimeout(() =>{
+        setMessage(null)
+      }, 5000)
+
       alert(`Unable to post the blog\nError message: ${exception}`)
     }
   }
@@ -132,6 +169,7 @@ const App = () => {
     return (
       <div>
         <h2>Log in to the app to see the blogs</h2>
+        <Notification message={Message}/>
         {loginForm()}
       </div>
     )
@@ -140,6 +178,8 @@ const App = () => {
   return (
     <div>
       <h2>blogs</h2>
+      <Notification message={Message}/>
+
       <p>{user.name} logged-in  <button onClick={handleLogout}>logout</button></p>
 
       <h2>create new</h2>
