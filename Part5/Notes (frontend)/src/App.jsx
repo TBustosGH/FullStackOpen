@@ -4,13 +4,20 @@ import noteService from './services'
 import Notification from './components/Notification'
 import Footer from './components/Footer'
 import loginService from './services/login'
+import LoginForm from './components/LoginForm'
+import NoteForm from './components/NoteForm'
+import Togglable from './components/Togglable'
 
 const App = () => {
-  const [notes, setNotes] = useState([])
-  const [newNote, setNewNote] = useState('')
-  const [showAll, setShowAll] = useState(true)
+  //Notes states
+  const [notes, setNotes] = useState([])  //Where all notes are saved
+  const [newNote, setNewNote] = useState('')  //Contains the new note
+  const [showAll, setShowAll] = useState(true)  //Used as a boolean filter
   const notesToShow = showAll ? notes : notes.filter(note => note.important)
-  const [errorMessage, setErrorMessage] = useState(null)
+  //Message state
+  const [errorMessage, setErrorMessage] = useState(null) 
+  //Login states
+  const [showLogin, setShowLogin] = useState(false)
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [user, setUser] = useState(null)
@@ -94,6 +101,8 @@ const App = () => {
       setUser(user)
       setUsername('')
       setPassword('')
+
+      setShowLogin(false)
     } catch (exception) {
       setErrorMessage('Wrong credentials')
       setTimeout(() => {
@@ -101,55 +110,43 @@ const App = () => {
       }, 5000)
     }
   }
+  const handleUsernameChange = ({ target }) => setUsername(target.value)
+  const handlePasswordChange = ({ target }) => setPassword(target.value)
 
-  //Aux methods
-  const loginForm = () => (
-    <form onSubmit={handleLogin}>
-      <div>
-        username
-        <input
-        type='text'
-        value={username}
-        name='Username'
-        onChange={({ target }) => setUsername(target.value)}
-        />
-      </div>
-      <div>
-        password
-          <input
-          type='password'
-          value={password}
-          name='Password'
-          onChange={({ target }) => setPassword(target.value)}
-          />
-      </div>
-      <button type='submit'>Login</button>
-    </form>
-  )
-  const noteForm = () => (
-    <form onSubmit={AddNote}>
-      <input
-      value={newNote}
-      onChange={HandleNoteChange}
-      />
-      <button type='submit'>save</button>
-    </form>
-  )
 
   return(
     <div>
       <div>
         <h1>Notes</h1>
         <Notification message={errorMessage} />
+        
+        
 
-        {user === null 
-        ? loginForm()
+        {user === null
+        ? <div>
+            <p>You must log in to post a new note</p>
+            <Togglable buttonLabel='Log in'>
+              <LoginForm 
+              handleSubmit={handleLogin}
+              handleUsernameChange={handleUsernameChange}
+              handlePasswordChange={handlePasswordChange}
+              username={username}
+              password={password}
+              />
+            </Togglable>
+          </div>
         : <div>
             <p>{user.name} logged-in</p>
-            <p>Write a new note!</p>
-            {noteForm()}
+            <Togglable buttonLabel='New note'>
+              <NoteForm
+              handleSubmit={AddNote}
+              newNote={newNote}
+              handleNoteChange={HandleNoteChange}
+              />
+            </Togglable>
           </div>
         }
+
         <button onClick={() => setShowAll(!showAll)}>
           show {showAll? 'important' : 'all'}
         </button>
