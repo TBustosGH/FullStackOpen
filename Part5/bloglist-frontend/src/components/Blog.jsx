@@ -1,9 +1,36 @@
-const Blog = ({ blog }) => (
-  <div>
-    <p>
-      <strong>{blog.author.username}</strong> <br/> {blog.title}
-    </p>
-  </div>  
-)
+import { useState } from 'react'
+
+const Blog = ({ blog }) => {
+  const [showAll, setShowAll] = useState(false)
+
+  const blogStyle = {
+    padding: 5,
+    border: 'solid',
+    borderWidth: 1,
+    marginBottom: 5
+  }
+
+  if (!showAll) {
+    return(
+      <div style={blogStyle}>
+        <h3>{blog.title}</h3>
+        <p>{blog.author.username}</p>
+
+        <button onClick={() => setShowAll(!showAll)}>Show more</button>
+      </div>
+    )
+  } else if (showAll) {
+    return(
+      <div style={blogStyle}>
+        <h3>{blog.title}</h3>
+        <p>{blog.author.username}</p>
+        <p>Likes: {blog.likes}  <button onClick={() => console.log('like button clicked!')}>like</button> </p>
+        <p>Url: {blog.url}</p>
+
+        <button onClick={() => setShowAll(!showAll)}>Show less</button>
+      </div>
+    )
+  }
+}
 
 export default Blog
