@@ -5,6 +5,7 @@ import loginService from './services/login'
 
 import Notification from './components/Notification'
 import Togglable from './components/Togglable'
+import BlogForm from './components/BlogForm'
 
 const App = () => {
   //Blogs state
@@ -13,9 +14,6 @@ const App = () => {
   const [user, setUser] = useState(null)
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
-  //Blog form states
-  const [newBlog, setNewBlog] = useState('')
-  const [newBlogUrl, setNewBlogUrl] = useState('')
   //Message states
   const [Message , setMessage] = useState(null)
 
@@ -110,27 +108,17 @@ const App = () => {
   }
   //Blog form
   const blogFormRef = useRef()
-  const addBlog = async (event) => {
-    event.preventDefault()
-    const blogObject = {
-      title: newBlog,
-      url: newBlogUrl || 'No url provided'
-    }
-
+  const addBlog = async (blogObject) => {
     try {
       const returnedBlog = await blogService.create(blogObject)
-      console.log(returnedBlog)
 
       const updatedBlogs = await blogService.getAll()
       setBlogs(updatedBlogs)
-      setNewBlog('')
-      setNewBlogUrl('')
 
       setMessage('Your new blog has been properly posted!')
       setTimeout(() =>{
         setMessage(null)
       }, 5000)
-
       blogFormRef.current.toggleVisibility()
     } catch(exception) {
       setMessage('There was an error at posting your blog')
@@ -143,30 +131,7 @@ const App = () => {
   }
   const blogForm = () => (
     <Togglable buttonLabel='Create a new note' ref={blogFormRef}>
-      <h2>Post a new note!</h2>
-
-      <form onSubmit={addBlog}>
-        <div>
-          title:
-          <input
-          type='text'
-          value={newBlog}
-          name='NewBlogName'
-          onChange={({ target }) => setNewBlog(target.value)}
-          required
-          />
-        </div>
-        <div>
-          url:
-          <input
-          type='text'
-          value={newBlogUrl}
-          name='NewBlogURL'
-          onChange={({ target }) => setNewBlogUrl(target.value)}
-          />
-        </div>
-        <button type='submit'>create</button>
-      </form>
+      <BlogForm postBlog={addBlog}/>
     </Togglable>
   )
 
