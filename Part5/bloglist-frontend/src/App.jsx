@@ -1,10 +1,10 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import Blog from './components/Blog'
 import blogService from './services/blogs'
 import loginService from './services/login'
-import login from './services/login'
-import Notification from './components/Notification'
 
+import Notification from './components/Notification'
+import Togglable from './components/Togglable'
 
 const App = () => {
   //Blogs state
@@ -109,6 +109,7 @@ const App = () => {
     }, 5000)
   }
   //Blog form
+  const blogFormRef = useRef()
   const addBlog = async (event) => {
     event.preventDefault()
     const blogObject = {
@@ -129,6 +130,8 @@ const App = () => {
       setTimeout(() =>{
         setMessage(null)
       }, 5000)
+
+      blogFormRef.current.toggleVisibility()
     } catch(exception) {
       setMessage('There was an error at posting your blog')
       setTimeout(() =>{
@@ -139,28 +142,32 @@ const App = () => {
     }
   }
   const blogForm = () => (
-    <form onSubmit={addBlog}>
-      <div>
-        title:
-        <input
-        type='text'
-        value={newBlog}
-        name='NewBlogName'
-        onChange={({ target }) => setNewBlog(target.value)}
-        required
-        />
-      </div>
-      <div>
-        url:
-        <input
-        type='text'
-        value={newBlogUrl}
-        name='NewBlogURL'
-        onChange={({ target }) => setNewBlogUrl(target.value)}
-        />
-      </div>
-      <button type='submit'>create</button>
-    </form>
+    <Togglable buttonLabel='Create a new note' ref={blogFormRef}>
+      <h2>Post a new note!</h2>
+
+      <form onSubmit={addBlog}>
+        <div>
+          title:
+          <input
+          type='text'
+          value={newBlog}
+          name='NewBlogName'
+          onChange={({ target }) => setNewBlog(target.value)}
+          required
+          />
+        </div>
+        <div>
+          url:
+          <input
+          type='text'
+          value={newBlogUrl}
+          name='NewBlogURL'
+          onChange={({ target }) => setNewBlogUrl(target.value)}
+          />
+        </div>
+        <button type='submit'>create</button>
+      </form>
+    </Togglable>
   )
 
 
@@ -182,7 +189,6 @@ const App = () => {
 
       <p>{user.name} logged-in  <button onClick={handleLogout}>logout</button></p>
 
-      <h2>create new</h2>
       {blogForm()}
 
       {blogs.map(blog => 
