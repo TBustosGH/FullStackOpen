@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react'
+import { useState, useEffect, useRef, } from 'react'
 import Blog from './components/Blog'
 import blogService from './services/blogs'
 import loginService from './services/login'
@@ -17,19 +17,20 @@ const App = () => {
   //Message states
   const [Message , setMessage] = useState(null)
 
-
   //Get all notes
+  const getAllBlogs = async () => {
+      const updatedBlogs = await blogService.getAll()
+      if (!updatedBlogs) {
+        setMessage('Unable to get blogs from the server')
+        setTimeout(() => {
+          setMessage(null)
+        }, 5000)
+      } else {
+        setBlogs(updatedBlogs)
+      }
+    }
   useEffect(() => {
-    blogService.getAll().then(blogs => {
-      setBlogs(blogs)
-    })
-    .catch(error => {
-      setMessage('Unable to get blogs from the server')
-      setTimeout(() =>{
-        setMessage(null)
-      }, 5000)
-      console.log('Error code: ', error)
-    })
+    getAllBlogs()
   }, [])
   //Checks if there's a logged user in local storage
   useEffect(() => {
@@ -40,7 +41,6 @@ const App = () => {
       blogService.setToken(user.token)
     }
   }, [])
-
 
   //LOGIN
   const handleLogin = async (event) => {
