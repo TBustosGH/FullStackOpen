@@ -1,5 +1,5 @@
 const blogsRouter = require('express').Router()
-const { request } = require('express')
+const { request, response } = require('express')
 const Blog = require('../models/blog')
 const User = require('../models/user')
 const jwt = require('jsonwebtoken')
@@ -69,6 +69,19 @@ blogsRouter.delete('/:id', middleware.userExtractor, async (request, response, n
         response.status(400).json({ error: 'Blog must be yours to delete' })
     }
 })
+blogsRouter.put('/:id', async (request, response, next) => {
+    //blog to update info
+    const  blogId = request.params.id
+    const {title, author, url, likes, id} = request.body
 
+
+    //update operation
+    try {
+        const updatedBlog = await Blog.findByIdAndUpdate(blogId, {title, author, url, likes, id }, { new: true, runValidators: true })
+        response.json(updatedBlog)
+    } catch (exception) {
+        next(exception)
+    }
+})
 
 module.exports = blogsRouter
