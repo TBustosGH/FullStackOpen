@@ -136,6 +136,26 @@ const App = () => {
       <BlogForm postBlog={addBlog}/>
     </Togglable>
   )
+  const deleteBlog = async (blog) => {
+    const blogId = blog.id
+    const confirmMessage = `Remove blog ${blog.title} by ${blog.author.username}?`
+
+    if (window.confirm(confirmMessage)) {
+      try{
+        await blogService.deleteBlog(blogId)
+        setMessage(`Removed blog ${blog.title} by ${blog.author.username}`)
+        setTimeout(() => {
+          setMessage(null)
+        }, 5000)
+        getAllBlogs()
+      } catch(exception) {
+        setMessage(`There's was an error trying to delete the blog`)
+        setTimeout(() =>{
+          setMessage(null)
+        }, 5000)
+      }
+    }
+  }
 
 
   //Conditional Return
@@ -159,7 +179,7 @@ const App = () => {
       {blogForm()}
 
       {blogs.map(blog => 
-        <Blog key={blog.id} blog={blog}/>
+        <Blog key={blog.id} blog={blog} author={blog.author.username.toString() === user.username.toString()} deleteBlog={deleteBlog}/>   //author checks if the actual user (saved in a state is the author of the blog)
       )}
     </div>
   )
