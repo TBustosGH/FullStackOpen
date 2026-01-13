@@ -19,18 +19,18 @@ const App = () => {
 
   //Get all notes
   const getAllBlogs = async () => {
-      const updatedBlogs = await blogService.getAll()
-      
-      if (!updatedBlogs) {
-        setMessage('Unable to get blogs from the server')
-        setTimeout(() => {
-          setMessage(null)
-        }, 5000)
-      } else {
-        const sortedBlogs = updatedBlogs.sort((a, b) => b.likes - a.likes)  //sorts blogs by number of likes
-        setBlogs(sortedBlogs)  
-      }
+    const updatedBlogs = await blogService.getAll()
+
+    if (!updatedBlogs) {
+      setMessage('Unable to get blogs from the server')
+      setTimeout(() => {
+        setMessage(null)
+      }, 5000)
+    } else {
+      const sortedBlogs = updatedBlogs.sort((a, b) => b.likes - a.likes)  //sorts blogs by number of likes
+      setBlogs(sortedBlogs)
     }
+  }
   useEffect(() => {
     getAllBlogs()
   }, [])
@@ -61,13 +61,13 @@ const App = () => {
       setPassword('')
 
       setMessage('Successfully logged in')
-      setTimeout(() =>{
+      setTimeout(() => {
         setMessage(null)
       }, 5000)
     } catch(exception) {
       console.log(`an error has ocurred!!!\n${exception}`)
       setMessage('Wrong username or password')
-      setTimeout(() =>{
+      setTimeout(() => {
         setMessage(null)
       }, 5000)
     }
@@ -77,21 +77,21 @@ const App = () => {
       <div>
         username
         <input
-        type='text'
-        value={username}
-        name='Username'
-        onChange={({ target }) => setUsername(target.value)}
-        required
+          type='text'
+          value={username}
+          name='Username'
+          onChange={({ target }) => setUsername(target.value)}
+          required
         />
       </div>
       <div>
         password
         <input
-        type='password'
-        value={password}
-        name='Password'
-        onChange={({ target }) => setPassword(target.value)}
-        required
+          type='password'
+          value={password}
+          name='Password'
+          onChange={({ target }) => setPassword(target.value)}
+          required
         />
       </div>
       <button type='submit'>Login</button>
@@ -104,7 +104,7 @@ const App = () => {
     setUser(null)
 
     setMessage('Successfully logged out')
-    setTimeout(() =>{
+    setTimeout(() => {
       setMessage(null)
     }, 5000)
   }
@@ -118,13 +118,13 @@ const App = () => {
       setBlogs(updatedBlogs)
 
       setMessage('Your new blog has been properly posted!')
-      setTimeout(() =>{
+      setTimeout(() => {
         setMessage(null)
       }, 5000)
       blogFormRef.current.toggleVisibility()
     } catch(exception) {
       setMessage('There was an error at posting your blog')
-      setTimeout(() =>{
+      setTimeout(() => {
         setMessage(null)
       }, 5000)
 
@@ -149,8 +149,8 @@ const App = () => {
         }, 5000)
         getAllBlogs()
       } catch(exception) {
-        setMessage(`There's was an error trying to delete the blog`)
-        setTimeout(() =>{
+        setMessage('There\'s was an error trying to delete the blog')
+        setTimeout(() => {
           setMessage(null)
         }, 5000)
       }
@@ -178,7 +178,7 @@ const App = () => {
 
       {blogForm()}
 
-      {blogs.map(blog => 
+      {blogs.map(blog =>
         <Blog key={blog.id} blog={blog} author={blog.author.username.toString() === user.username.toString()} deleteBlog={deleteBlog}/>   //author checks if the actual user (saved in a state is the author of the blog)
       )}
     </div>

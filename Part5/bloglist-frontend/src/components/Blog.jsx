@@ -20,12 +20,12 @@ const Blog = ({ blog, author, deleteBlog }) => {
       id: blog.id
     }
 
-    const updatedBlog = await blogService.update(blog.id, blogWithUpdatedLikes) 
-    
+    const updatedBlog = await blogService.update(blog.id, blogWithUpdatedLikes)
+
     setLikes(likes + 1)
   }
 
-    if (!showAll) {
+  if (!showAll) {
     return(
       <div style={blogStyle}>
         <h3>{blog.title}</h3>
@@ -44,8 +44,8 @@ const Blog = ({ blog, author, deleteBlog }) => {
 
         <button onClick={() => setShowAll(!showAll)}>Show less</button>
         {author
-        ? <button onClick={() => deleteBlog(blog)}>delete</button>
-        : null
+          ? <button onClick={() => deleteBlog(blog)}>delete</button>
+          : null
         }
       </div>
     )
