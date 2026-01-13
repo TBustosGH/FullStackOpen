@@ -20,13 +20,15 @@ const App = () => {
   //Get all notes
   const getAllBlogs = async () => {
       const updatedBlogs = await blogService.getAll()
+      
       if (!updatedBlogs) {
         setMessage('Unable to get blogs from the server')
         setTimeout(() => {
           setMessage(null)
         }, 5000)
       } else {
-        setBlogs(updatedBlogs)
+        const sortedBlogs = updatedBlogs.sort((a, b) => b.likes - a.likes)  //sorts blogs by number of likes
+        setBlogs(sortedBlogs)  
       }
     }
   useEffect(() => {
