@@ -31,7 +31,7 @@ const Blog = ({ blog, author, deleteBlog }) => {
         <h3>{blog.title}</h3>
         <p>{blog.author.username}</p>
 
-        <button onClick={() => setShowAll(!showAll)}>Show more</button>
+        <button id='blogShowMoreButton' onClick={() => setShowAll(!showAll)}>Show more</button>
       </div>
     )
   } else if (showAll) {
