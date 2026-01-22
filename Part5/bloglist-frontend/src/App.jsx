@@ -156,7 +156,18 @@ const App = () => {
       }
     }
   }
+  //Make a put to the backend, adding one like to a post
+  const updateLikes = async (blog) => {
+    const blogWithUpdatedLikes = {
+      title: blog.title,
+      author: blog.author.id,
+      url: blog.url,
+      likes: blog.likes,
+      id: blog.id
+    }
 
+    const updatedBlog = await blogService.update(blog.id, blogWithUpdatedLikes)
+  }
 
   //Conditional Return
   if(user === null) {
@@ -179,7 +190,7 @@ const App = () => {
       {blogForm()}
 
       {blogs.map(blog =>
-        <Blog key={blog.id} blog={blog} author={blog.author.username.toString() === user.username.toString()} deleteBlog={deleteBlog}/>   //author checks if the actual user (saved in a state is the author of the blog)
+        <Blog key={blog.id} blog={blog} author={blog.author.username.toString() === user.username.toString()} deleteBlog={deleteBlog} updateLikes={updateLikes}/>   //author checks if the actual user (saved in a state is the author of the blog)
       )}
     </div>
   )

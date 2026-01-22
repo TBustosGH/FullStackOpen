@@ -15,9 +15,10 @@ describe('Test on BLog component', () => {
     }
 
     let container
+    const mockHandler = vi.fn()
     beforeEach(() => {
         container = render(
-            <Blog blog={blog} author={false} deleteBlog={null} />
+            <Blog blog={blog} author={false} deleteBlog={null} updateLikes={mockHandler}/>
         ).container
     })
 
@@ -41,5 +42,20 @@ describe('Test on BLog component', () => {
         
         expect(div).toHaveTextContent(blog.url, { exact: false })
         expect(div).toHaveTextContent(blog.likes, { exact: false })
+    })
+
+    test('When clicking likes button twice, updateLikes function is called twice', async () => {
+        const user = userEvent.setup()
+        //Click "show more" button to get to likes button
+        const showMoreButton = container.querySelector('#blogShowMoreButton')
+        await user.click(showMoreButton)
+
+        //Clikc likes button twice
+        const likesButton = screen.getByText('like')
+        await user.click(likesButton)
+        await user.click(likesButton)
+
+        expect(mockHandler.mock.calls).toHaveLength(2)
+        
     })
 })
