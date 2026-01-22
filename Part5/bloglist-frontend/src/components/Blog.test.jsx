@@ -50,12 +50,11 @@ describe('Test on BLog component', () => {
         const showMoreButton = container.querySelector('#blogShowMoreButton')
         await user.click(showMoreButton)
 
-        //Clikc likes button twice
+        //Click likes button twice
         const likesButton = screen.getByText('like')
         await user.click(likesButton)
         await user.click(likesButton)
 
         expect(mockHandler.mock.calls).toHaveLength(2)
-        
     })
 })

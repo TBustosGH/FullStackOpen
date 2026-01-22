@@ -1,31 +1,24 @@
 import { useState } from 'react'
 
-const BlogForm = ({ postBlog }) => {
+const BlogForm = ({ handleSubmit }) => {
   const [newBlog, setNewBlog] = useState('')
   const [newUrl, setNewUrl] = useState('')
 
-  const handleSubmit = (event) => {
-    event.preventDefault()
-
-    postBlog({
-      title: newBlog,
-      url: newUrl || 'no url provided'
-    })
-
-    setNewBlog('')
-    setNewUrl('')
-  }
-
   return(
     <div>
-      <h2>Post a new note!</h2>
+      <h2>Post a new Blog!</h2>
 
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={(event) => {
+        handleSubmit(event, newBlog, newUrl)
+        setNewBlog('')
+        setNewUrl('')
+      }}>
         <div>
                     title:
           <input
             type='text'
             value={newBlog}
+            placeholder='Your new blog here!'
             onChange={(event) => setNewBlog(event.target.value)}
             required
           />

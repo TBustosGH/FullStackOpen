@@ -131,9 +131,17 @@ const App = () => {
       alert(`Unable to post the blog\nError message: ${exception}`)
     }
   }
+  const handleSubmit = (event, newBlog, newUrl) => {
+    event.preventDefault()
+
+    addBlog({
+      title: newBlog,
+      url: newUrl || 'no url provided'
+    })
+  }
   const blogForm = () => (
     <Togglable buttonLabel='Create a new note' ref={blogFormRef}>
-      <BlogForm postBlog={addBlog}/>
+      <BlogForm handleSubmit={handleSubmit}/>
     </Togglable>
   )
   const deleteBlog = async (blog) => {
