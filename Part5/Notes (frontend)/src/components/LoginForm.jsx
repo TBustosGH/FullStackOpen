@@ -25,6 +25,7 @@ const LoginForm = ({ userLogin }) => {
                 <div>
                     username
                     <input
+                    data-testid='username'
                     type='text'
                     value={username}
                     onChange={(event) => setUsername(event.target.value)}
@@ -34,6 +35,7 @@ const LoginForm = ({ userLogin }) => {
                 <div>
                     password
                     <input
+                    data-testid='password'
                     type='password'
                     value={password}
                     onChange={(event) => setPassword(event.target.value)}
