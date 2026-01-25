@@ -40,7 +40,7 @@ DO NOT FORGET: change this if statement (right below this commentary) to false, 
 its production value when quit testing.
 */
 
-if (true) {
+if (false) {
     logger.info('Testing...\n')
     const testingRouter = require('./controllers/testing')
     app.use('/api/testing', testingRouter)
