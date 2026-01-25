@@ -32,6 +32,20 @@ app.use('/api/notes', notesRouter)
 app.use('/api/users', usersRouter)
 app.use('/api/login', loginRouter)
 
+/*
+For some reason the App crashes when I try to run "npm run start:test", so I decided to configure the app manually.
+So, everytime I had to make tests, I'd have to change the "config.MONGODB_URI" var, in config.js to its test value
+& change the boolean value of this if statement to true.
+DO NOT FORGET: change this if statement (right below this commentary) to false, and "config.MONGODB_URI" var to 
+its production value when quit testing.
+*/
+
+if (true) {
+    logger.info('Testing...\n')
+    const testingRouter = require('./controllers/testing')
+    app.use('/api/testing', testingRouter)
+}
+
 app.use(middleware.unknownEndpoint)
 app.use(middleware.errorHandler)
 
