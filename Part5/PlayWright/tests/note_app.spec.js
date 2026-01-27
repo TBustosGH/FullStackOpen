@@ -40,14 +40,12 @@ describe('Note app', () => {
         beforeEach(async ({ page }) => {
             //log in
             await loginWith(page, 'testUser', '0000')
-            await page.getByText(content).waitFor()
             await expect(page.getByText('username: testUser, password: 0000 logged-in')).toBeVisible()
         })
         
         test('a new note can be created', async ({ page }) => {
             //Create a new note
             await createNote(page, 'a new note created by playwright')
-            await page.getByText(content).waitFor()
             await expect(page.getByText('a new note created by playwright')).toBeVisible()
         })
 
@@ -62,7 +60,6 @@ describe('Note app', () => {
                 const NoteElement = await NoteText.locator('..')
 
                 await NoteElement.getByRole('button', { name: 'make important' }).click()
-                await page.getByText(content).waitFor()
                 await expect(NoteElement.getByText('make not important')).toBeVisible
             })
         })

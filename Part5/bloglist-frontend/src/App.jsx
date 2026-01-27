@@ -198,7 +198,7 @@ const App = () => {
       {blogForm()}
 
       {blogs.map(blog =>
-        <Blog key={blog.id} blog={blog} author={blog.author.username.toString() === user.username.toString()} deleteBlog={deleteBlog} updateLikes={updateLikes}/>   //author checks if the actual user (saved in a state is the author of the blog)
+        <Blog key={blog.id} blog={blog} author={blog.author.username.toString() === user.username.toString() || false } deleteBlog={deleteBlog} updateLikes={updateLikes}/>   //author checks if the actual user (saved in a state is the author of the blog)
       )}
     </div>
   )
