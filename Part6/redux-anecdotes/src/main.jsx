@@ -15,5 +15,5 @@ const renderApp = () => {
 }
 
 renderApp()
-
+console.log(store.getState())
 store.subscribe(renderApp)
