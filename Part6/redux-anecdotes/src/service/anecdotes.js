@@ -1,4 +1,4 @@
-const baseUrl = 'http://localhost:5172/anecdotes'
+const baseUrl = 'http://localhost:5172/anecdotes/'
 
 const getAll = async () => {
     const response = await fetch(baseUrl)
@@ -24,5 +24,22 @@ const createNew = async (content) => {
 
     return await response.json()
 }
+const addVote = async (content) => {
+    const id = content.id
+    const options = {
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(content)
+    }
 
-export default { getAll, createNew }
+    fetch(baseUrl + id, options)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Something went wrong trying to PUT to server')
+            }
+        })
+}
+
+export default { getAll, createNew, addVote }
