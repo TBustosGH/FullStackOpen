@@ -1,5 +1,6 @@
 import { useSelector } from 'react-redux'
 import { setNotification, eraseNotification } from '../reducers/notificationReducer'
+import { useDispatch } from 'react-redux'
 
 const Notification = () => {
   const style = {
@@ -9,13 +10,17 @@ const Notification = () => {
     marginBottom: 10
   }
   const notificationState = useSelector(state => state.notification)
-
-
-  if (!notificationState || notificationState === '')
+  const dispatch = useDispatch()
+  
+  if (!notificationState || notificationState.message === '')
     return null
 
+  setTimeout(() => {
+    dispatch(eraseNotification())
+  }, notificationState.timeDelay * 1000)
+
   return <div style={style}>
-    {notificationState}
+    {notificationState.message}
   </div>
 }
 

@@ -8,16 +8,10 @@ const AnecdoteForm = () => {
 
     const addAnecdote = async (event) => {
         event.preventDefault()
-
         const content = event.target.anecdote.value
         event.target.anecdote.value = ''
-
         dispatch(appendAnecdote(content))
-
-        dispatch(setNotification('a new anecdote added properly'))
-        setTimeout(() => {
-            dispatch(eraseNotification())
-        }, 5000)
+        dispatch(setNotification({ message: 'a new anecdote added properly', timeDelay: 10 }))
     }
     return(
         <div>
