@@ -1,14 +1,65 @@
 {
-    "notes": [
-        {
-            "content": "hola, mundo",
-            "important": false,
-            "id": "1"
-        },
-        {
-            "content": "state changes are made with actions",
-            "important": false,
-            "id": "2"
-        }
-    ]
+  "notes": [
+    {
+      "content": "hola, mundo",
+      "important": true,
+      "id": "1"
+    },
+    {
+      "content": "state changes are made with actions",
+      "important": false,
+      "id": "2"
+    },
+    {
+      "id": "e709",
+      "content": "asf",
+      "importante": true
+    },
+    {
+      "id": "d27f",
+      "content": "asd",
+      "importante": true
+    },
+    {
+      "id": "0051",
+      "content": "hlhlhlhlhlh3",
+      "importante": true
+    },
+    {
+      "id": "602b",
+      "content": "NONONON",
+      "importante": true
+    },
+    {
+      "id": "8c20",
+      "content": "asf",
+      "importante": true
+    },
+    {
+      "id": "129a",
+      "content": "faffafaf",
+      "importante": true,
+      "important": true
+    },
+    {
+      "id": "4337",
+      "content": "fafasf",
+      "importante": true
+    },
+    {
+      "id": "cb2c",
+      "content": "fas",
+      "importante": true
+    },
+    {
+      "id": "e8eb",
+      "content": "asd",
+      "importante": true
+    },
+    {
+      "id": "425a",
+      "content": "fafaafafafaffa",
+      "importante": true
+    }
+  ]
 }
