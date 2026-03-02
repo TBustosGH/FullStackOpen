@@ -2,7 +2,7 @@
   "notes": [
     {
       "content": "hola, mundo",
-      "important": true,
+      "important": false,
       "id": "1"
     },
     {
@@ -44,21 +44,40 @@
     {
       "id": "4337",
       "content": "fafasf",
-      "importante": true
+      "importante": true,
+      "important": false
     },
     {
       "id": "cb2c",
       "content": "fas",
-      "importante": true
+      "importante": true,
+      "important": false
     },
     {
       "id": "e8eb",
       "content": "asd",
-      "importante": true
+      "importante": true,
+      "important": false
     },
     {
       "id": "425a",
       "content": "fafaafafafaffa",
+      "importante": true,
+      "important": true
+    },
+    {
+      "id": "019a",
+      "content": "asd",
+      "importante": true
+    },
+    {
+      "id": "a476",
+      "content": "gdgsdgsdgsdgsd",
+      "importante": true
+    },
+    {
+      "id": "cab7",
+      "content": "asf",
       "importante": true
     }
   ]
