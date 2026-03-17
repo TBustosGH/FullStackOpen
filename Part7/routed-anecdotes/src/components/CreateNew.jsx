@@ -1,5 +1,3 @@
-import { useState } from 'react'
-
 import { useField } from '../hooks/index'
 
 //RENDERS A FORM TO ADD A NEW ANECDOTE
@@ -18,23 +16,26 @@ const CreateNew = (props) => {
         })
     }
 
+
     return (
         <div>
         <h2>create a new anecdote</h2>
         <form onSubmit={handleSubmit}>
             <div>
             content
-            <input name='content' {...content} />
+            <input name='content' {...content} required/>
             </div>
             <div>
             author
-            <input name='author' {...author}/>
+            <input name='author' {...author} required/>
             </div>
             <div>
             url for more info
-            <input name='info' {...info}/>
+            <input name='info' {...info} required/>
             </div>
-            <button>create</button>
+            
+            <input type='submit' value='create'/>
+            <input type='reset' value='reset'/>
         </form>
         </div>
     )
