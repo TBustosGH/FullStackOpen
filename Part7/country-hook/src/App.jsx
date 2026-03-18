@@ -17,9 +17,14 @@ const useField = (type) => {
 
 const useCountry = (name) => {
   const [country, setCountry] = useState(null)
-
-  useEffect(() => {})
-
+  const apiUrl = 'https://studies.cs.helsinki.fi/restcountries/api/name/'
+  
+  useEffect( () => {
+    const data = fetch(`${apiUrl}${name}`)
+      .then(() => setCountry(data))
+    
+  }, [name, apiUrl])
+  console.log(country)
   return country
 }
 
@@ -54,6 +59,7 @@ const App = () => {
   const fetch = (e) => {
     e.preventDefault()
     setName(nameInput.value)
+    console.log(country)
   }
 
   return (
