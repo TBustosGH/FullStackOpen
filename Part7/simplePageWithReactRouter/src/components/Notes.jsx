@@ -1,5 +1,11 @@
-import { Table } from 'react-bootstrap'
 import { Link } from 'react-router-dom'
+import {
+    TableBody, 
+    TableContainer, 
+    Table, 
+    TableRow, 
+    TableCell 
+} from '@mui/material'
 
 export const Note = ({ note }) => {
     return (
@@ -14,21 +20,22 @@ export const Note = ({ note }) => {
 export const Notes = ({ notes }) => (
     <div>
         <h2>Notes</h2>
-        <Table striped>
-        <tbody>
-            {notes.map(note => 
-            <tr key={note.id}>
-                <td>
-                <Link to={`/notes/${note.id}`}>
-                    {note.content}
-                </Link>
-                </td>
-                <td>
-                {note.user}
-                </td>
-            </tr>
-            )}
-        </tbody>
-        </Table>
+        
+        <TableContainer >
+            <Table>
+                <TableBody>
+                {notes.map(note => (
+                    <TableRow key={note.id}>
+                    <TableCell>
+                        <Link to={`/notes/${note.id}`}>{note.content}</Link>
+                    </TableCell>
+                    <TableCell>
+                        {note.user}
+                    </TableCell>
+                    </TableRow>
+                ))}
+                </TableBody>
+            </Table>
+        </TableContainer>
     </div>
 )

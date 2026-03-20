@@ -1,5 +1,4 @@
 import { useState } from 'react'
-
 import {
   Routes,
   Route,
@@ -9,14 +8,25 @@ import {
   useNavigate,
   useMatch
 } from "react-router-dom"
-
-import { Alert } from 'react-bootstrap'
+import { Container, Alert } from '@mui/material'
+import styled from 'styled-components'
+//Components
 import { Home } from './components/Home'
 import { Login } from './components/Login'
 import { Notes, Note } from './components/Notes'
 import { Users } from './components/Users'
 import { Navigation } from './components/Navbar'
 
+//Styled-Components
+const Page = styled.div`
+  padding: 1em;
+  background: papayawhip;
+`
+const Footer = styled.div`
+  background: Chocolate;
+  padding: 1em;
+  margin-top: 1em;
+`
 
 const App = () => {
   const [notes, setNotes] = useState([
@@ -61,9 +71,9 @@ const App = () => {
     : null
 
   return (
-    <div className='container'>
+    <Page>
       {(message &&
-        <Alert variant='success'>
+        <Alert severity='success'>
           {message}
         </Alert>
       )}
@@ -79,11 +89,11 @@ const App = () => {
         <Route path="/" element={<Home />} />
       </Routes>
 
-      <footer>
+      <Footer>
         <br />
         <em>Note app, Department of Computer Science 2023</em>
-      </footer>
-    </div>
+      </Footer>
+    </Page>
   )
 }
 
