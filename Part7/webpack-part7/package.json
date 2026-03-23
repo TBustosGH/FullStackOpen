@@ -1,0 +1,17 @@
+{
+    "name": "webpack-part7",
+    "version": "0.0.1",
+    "description": "practising webpack",
+    "scripts": {
+        "build": "webpack --mode=development"
+    },
+    "license": "MIT",
+    "devDependencies": {
+        "webpack": "^5.105.4",
+        "webpack-cli": "^7.0.2"
+    },
+    "dependencies": {
+        "react": "^19.2.4",
+        "react-dom": "^19.2.4"
+    }
+}
