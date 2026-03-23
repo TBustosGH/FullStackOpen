@@ -1,10 +1,10 @@
 import React from 'react'
 
 const App = () => {
-    return (
-        <div>
-            hello webpack
-        </div>
+    react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(
+    'div',
+    null,
+    'hello webpack'
     )
 }
 
