@@ -1,0 +1,14 @@
+{
+    "notes": [
+        {
+            "important": true,
+            "content": "HTML is easy",
+            "id": "asdasdadsads"
+        },
+        {
+            "important": false,
+            "content": "Mongo can save js objects",
+            "id": "grgrgrgrgr"
+        }
+    ]
+}
