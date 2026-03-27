@@ -1,4 +1,18 @@
-import ReactDOM from 'react-dom/client'
-import App from './App'
+import { createRoot } from 'react-dom/client'
+import { Provider } from 'react-redux'
 
-ReactDOM.createRoot(document.getElementById('root')).render(<App />)
+import App from './App.jsx'
+import store from './store.js'
+
+const root = createRoot(document.getElementById('root'))
+const renderApp = () => {
+    root.render(
+        <Provider store={store}>
+            <App />
+        </Provider>
+    )
+}
+
+renderApp()
+
+store.subscribe(renderApp)

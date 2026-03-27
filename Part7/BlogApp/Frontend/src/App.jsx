@@ -1,13 +1,17 @@
 import { useState, useEffect, useRef, } from 'react'
-import Blog from './components/Blog'
+import { useDispatch, useSelector } from 'react-redux'
+
+import { setNotification, eraseNotification } from './reducers/notificationReducer.js'
 import blogService from './services/blogs'
 import loginService from './services/login'
 
+import Blog from './components/Blog'
 import Notification from './components/Notification'
 import Togglable from './components/Togglable'
 import BlogForm from './components/BlogForm'
 
 const App = () => {
+  const dispatch = useDispatch()
   //Blogs state
   const [blogs, setBlogs] = useState([])
   //User login states
@@ -15,20 +19,22 @@ const App = () => {
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   //Message states
-  const [Message , setMessage] = useState(null)
+  const notificationState = useSelector(({notification}) => notification)
+  const Message = notificationState
 
   //Get all notes
   const getAllBlogs = async () => {
-    const updatedBlogs = await blogService.getAll()
+    try {
+      const updatedBlogs = await blogService.getAll()
 
-    if (!updatedBlogs) {
-      setMessage('Unable to get blogs from the server')
-      setTimeout(() => {
-        setMessage(null)
-      }, 5000)
-    } else {
       const sortedBlogs = updatedBlogs.sort((a, b) => b.likes - a.likes)  //sorts blogs by number of likes
       setBlogs(sortedBlogs)
+    } catch (exception) {
+      dispatch(setNotification('Unable to get blogs from the server'))
+
+      setTimeout(() => {
+        dispatch(eraseNotification())
+      }, 5000)
     }
   }
   useEffect(() => {
@@ -60,15 +66,14 @@ const App = () => {
       setUsername('')
       setPassword('')
 
-      setMessage('Successfully logged in')
+      dispatch(setNotification('Successgully logged in'))
       setTimeout(() => {
-        setMessage(null)
+        dispatch(eraseNotification())
       }, 5000)
     } catch(exception) {
-      console.log(`an error has ocurred!!!\n${exception}`)
-      setMessage('Wrong username or password')
+      dispatch(setNotification('Wrong username of password'))
       setTimeout(() => {
-        setMessage(null)
+        dispatch(eraseNotification())
       }, 5000)
     }
   }
@@ -103,9 +108,9 @@ const App = () => {
     blogService.setToken(null)
     setUser(null)
 
-    setMessage('Successfully logged out')
+    dispatch(setNotification('Successfully logged out'))
     setTimeout(() => {
-      setMessage(null)
+      dispatch(eraseNotification())
     }, 5000)
   }
   //Blog form
@@ -117,15 +122,15 @@ const App = () => {
       const updatedBlogs = await blogService.getAll()
       setBlogs(updatedBlogs)
 
-      setMessage('Your new blog has been properly posted!')
+      dispatch(setNotification('Your new blog has been properly posted!'))
       setTimeout(() => {
-        setMessage(null)
+        dispatch(eraseNotification())
       }, 5000)
       blogFormRef.current.toggleVisibility()
     } catch(exception) {
-      setMessage('There was an error at posting your blog')
+      dispatch(setNotification('There was an error at posting your blog'))
       setTimeout(() => {
-        setMessage(null)
+        dispatch(eraseNotification())
       }, 5000)
 
       alert(`Unable to post the blog\nError message: ${exception}`)
@@ -151,15 +156,15 @@ const App = () => {
     if (window.confirm(confirmMessage)) {
       try{
         await blogService.deleteBlog(blogId)
-        setMessage(`Removed blog ${blog.title} by ${blog.author.username}`)
+        dispatch(setNotification(`Removed blog ${blog.title} by ${blog.author.username}`))
         setTimeout(() => {
-          setMessage(null)
+          dispatch(eraseNotification())
         }, 5000)
         getAllBlogs()
       } catch(exception) {
-        setMessage('There\'s was an error trying to delete the blog')
+        dispatch(setNotification('There\'s was an error trying to delete the blog'))
         setTimeout(() => {
-          setMessage(null)
+          dispatch(eraseNotification())
         }, 5000)
       }
     }
