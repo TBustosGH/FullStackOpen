@@ -2,6 +2,7 @@ import { useState, useEffect, useRef, } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 
 import { setNotification, eraseNotification } from './reducers/notificationReducer.js'
+import { clearInfo } from './reducers/userReducer.js'
 import blogService from './services/blogs'
 import loginService from './services/login'
 
@@ -9,6 +10,8 @@ import Blog from './components/Blog'
 import Notification from './components/Notification'
 import Togglable from './components/Togglable'
 import BlogForm from './components/BlogForm'
+import LoginForm from './components/LoginForm.jsx'
+import Login from './services/login'
 
 const App = () => {
   const dispatch = useDispatch()
@@ -16,8 +19,6 @@ const App = () => {
   const [blogs, setBlogs] = useState([])
   //User login states
   const [user, setUser] = useState(null)
-  const [username, setUsername] = useState('')
-  const [password, setPassword] = useState('')
   //Message states
   const notificationState = useSelector(({notification}) => notification)
   const Message = notificationState
@@ -51,57 +52,35 @@ const App = () => {
   }, [])
 
   //LOGIN
+  const newUser = useSelector((store) => store.user)
   const handleLogin = async (event) => {
     event.preventDefault()
-
+    
     try {
       const user = await loginService.login({
-        username, password
+        username: newUser.username,
+        password: newUser.password
       })
       window.localStorage.setItem(
         'loggedBlogappUser', JSON.stringify(user)
       )
       blogService.setToken(user.token)
       setUser(user)
-      setUsername('')
-      setPassword('')
+      dispatch(clearInfo())
 
       dispatch(setNotification('Successgully logged in'))
       setTimeout(() => {
         dispatch(eraseNotification())
       }, 5000)
     } catch(exception) {
+      console.log(exception)
       dispatch(setNotification('Wrong username of password'))
       setTimeout(() => {
         dispatch(eraseNotification())
       }, 5000)
     }
   }
-  const loginForm = () => (
-    <form onSubmit={handleLogin}>
-      <div>
-        username
-        <input
-          type='text'
-          value={username}
-          name='Username'
-          onChange={({ target }) => setUsername(target.value)}
-          required
-        />
-      </div>
-      <div>
-        password
-        <input
-          type='password'
-          value={password}
-          name='Password'
-          onChange={({ target }) => setPassword(target.value)}
-          required
-        />
-      </div>
-      <button type='submit'>Login</button>
-    </form>
-  )
+  
   //LOGOUT
   const handleLogout = async () => {
     window.localStorage.removeItem('loggedBlogappUser')
@@ -187,7 +166,7 @@ const App = () => {
       <div>
         <h2>Log in to the app to see the blogs</h2>
         <Notification message={Message}/>
-        {loginForm()}
+        <LoginForm handleSubmit={handleLogin} />
       </div>
     )
   }
