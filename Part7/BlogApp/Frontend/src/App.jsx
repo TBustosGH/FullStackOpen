@@ -136,12 +136,11 @@ const App = () => {
       alert(`Unable to post the blog\nError message: ${exception}`)
     }
   }
-  const handleSubmit = (event, newBlog, newUrl) => {
+  const handleSubmit = (event, blogObject) => {
     event.preventDefault()
-
     addBlog({
-      title: newBlog,
-      url: newUrl || 'no url provided'
+      title: blogObject.title,
+      url: blogObject.url || 'No URL provided'
     })
   }
   const blogForm = () => (
