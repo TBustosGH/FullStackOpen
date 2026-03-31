@@ -1,19 +1,26 @@
 import { useState, useEffect, useRef, } from 'react'
+//REACT QUERY
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
+import { useContext } from 'react'
+//REDUX
 import { useDispatch, useSelector } from 'react-redux'
-
 import { setNotification, eraseNotification } from './reducers/notificationReducer.js'
 import { clearInfo } from './reducers/userReducer.js'
+//SERVICES
 import blogService from './services/blogs'
 import loginService from './services/login'
-
+//COMPONENTS
 import Blog from './components/Blog'
 import Notification from './components/Notification'
 import Togglable from './components/Togglable'
 import BlogForm from './components/BlogForm'
 import LoginForm from './components/LoginForm.jsx'
-import Login from './services/login'
+import NotificationContext from './contexts/NotificationContext.jsx'
 
 const App = () => {
+  //REACT QUERY
+  const queryClient = useQueryClient()
+  //REDUX
   const dispatch = useDispatch()
   //Blogs state
   const [blogs, setBlogs] = useState([])
@@ -22,6 +29,7 @@ const App = () => {
   //Message states
   const notificationState = useSelector(({notification}) => notification)
   const Message = notificationState
+  const { notificationDispatch } = useContext(NotificationContext)
 
   //Get all notes
   const getAllBlogs = async () => {
@@ -31,10 +39,12 @@ const App = () => {
       const sortedBlogs = updatedBlogs.sort((a, b) => b.likes - a.likes)  //sorts blogs by number of likes
       setBlogs(sortedBlogs)
     } catch (exception) {
-      dispatch(setNotification('Unable to get blogs from the server'))
-
+      notificationDispatch({
+        type: 'SET',
+        payload: 'Unable to get blogs from the server'
+      })
       setTimeout(() => {
-        dispatch(eraseNotification())
+        notificationDispatch({ type: 'ERASE' })
       }, 5000)
     }
   }
@@ -68,15 +78,21 @@ const App = () => {
       setUser(user)
       dispatch(clearInfo())
 
-      dispatch(setNotification('Successgully logged in'))
+      notificationDispatch({
+        type: 'SET',
+        payload: 'Successfully logged in'
+      })
       setTimeout(() => {
-        dispatch(eraseNotification())
+        notificationDispatch({ type: 'ERASE' })
       }, 5000)
     } catch(exception) {
       console.log(exception)
-      dispatch(setNotification('Wrong username of password'))
+      notificationDispatch({
+        type: 'SET',
+        payload: 'Wrong username or password'
+      })
       setTimeout(() => {
-        dispatch(eraseNotification())
+        notificationDispatch({ type: 'ERASE' })
       }, 5000)
     }
   }
@@ -87,10 +103,13 @@ const App = () => {
     blogService.setToken(null)
     setUser(null)
 
-    dispatch(setNotification('Successfully logged out'))
-    setTimeout(() => {
-      dispatch(eraseNotification())
-    }, 5000)
+    notificationDispatch({
+        type: 'SET',
+        payload: 'Successfully logged out'
+      })
+      setTimeout(() => {
+        notificationDispatch({ type: 'ERASE' })
+      }, 5000)
   }
   //Blog form
   const blogFormRef = useRef()
@@ -101,15 +120,21 @@ const App = () => {
       const updatedBlogs = await blogService.getAll()
       setBlogs(updatedBlogs)
 
-      dispatch(setNotification('Your new blog has been properly posted!'))
+      notificationDispatch({
+        type: 'SET',
+        payload: 'Your new blog has been properly posted!'
+      })
       setTimeout(() => {
-        dispatch(eraseNotification())
+        notificationDispatch({ type: 'ERASE' })
       }, 5000)
       blogFormRef.current.toggleVisibility()
     } catch(exception) {
-      dispatch(setNotification('There was an error at posting your blog'))
+      notificationDispatch({
+        type: 'SET',
+        payload: 'There was an error at posting your blog'
+      })
       setTimeout(() => {
-        dispatch(eraseNotification())
+        notificationDispatch({ type: 'ERASE' })
       }, 5000)
 
       alert(`Unable to post the blog\nError message: ${exception}`)
@@ -134,15 +159,21 @@ const App = () => {
     if (window.confirm(confirmMessage)) {
       try{
         await blogService.deleteBlog(blogId)
-        dispatch(setNotification(`Removed blog ${blog.title} by ${blog.author.username}`))
+        notificationDispatch({
+        type: 'SET',
+        payload: `Removed blog ${blog.title} by ${blog.author.username}`
+        })
         setTimeout(() => {
-          dispatch(eraseNotification())
+          notificationDispatch({ type: 'ERASE' })
         }, 5000)
         getAllBlogs()
       } catch(exception) {
-        dispatch(setNotification('There\'s was an error trying to delete the blog'))
+        notificationDispatch({
+          type: 'SET',
+          payload: 'There\'s was an error trying to delete the blog'
+        })
         setTimeout(() => {
-          dispatch(eraseNotification())
+          notificationDispatch({ type: 'ERASE' })
         }, 5000)
       }
     }

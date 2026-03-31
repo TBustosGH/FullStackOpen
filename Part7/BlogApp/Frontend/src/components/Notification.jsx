@@ -1,17 +1,16 @@
-const Notification = ({ message }) => {
-  try {
-    if (message === '') {
-      return null
-    }
+import { useContext } from 'react'
+import NotificationContext from '../contexts/NotificationContext'
 
-    return(
-      <div className="statusMessage">
-        {message}
-      </div>
-    )
-  } catch(exception) {
-    console.log(exception)
-  }
+const Notification = ({ message }) => {
+  const { notification } = useContext(NotificationContext)
+
+  if (notification === null) return null
+
+  return (
+    <div>
+      { notification }
+    </div>
+  )
 }
 
 export default Notification
