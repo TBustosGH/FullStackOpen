@@ -1,10 +1,11 @@
 import { useState, useEffect, useRef, } from 'react'
 //REACT QUERY
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
+import { useQueryClient } from '@tanstack/react-query'
 import { useContext } from 'react'
+//CONTEXT
+import NotificationContext from './contexts/NotificationContext.jsx'
 //REDUX
 import { useDispatch, useSelector } from 'react-redux'
-import { setNotification, eraseNotification } from './reducers/notificationReducer.js'
 import { clearInfo } from './reducers/userReducer.js'
 //SERVICES
 import blogService from './services/blogs'
@@ -15,7 +16,7 @@ import Notification from './components/Notification'
 import Togglable from './components/Togglable'
 import BlogForm from './components/BlogForm'
 import LoginForm from './components/LoginForm.jsx'
-import NotificationContext from './contexts/NotificationContext.jsx'
+
 
 const App = () => {
   //REACT QUERY
