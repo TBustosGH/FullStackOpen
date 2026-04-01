@@ -4,9 +4,7 @@ import { useQueryClient } from '@tanstack/react-query'
 import { useContext } from 'react'
 //CONTEXT
 import NotificationContext from './contexts/NotificationContext.jsx'
-//REDUX
-import { useDispatch, useSelector } from 'react-redux'
-import { clearInfo } from './reducers/userReducer.js'
+import UserContext from './contexts/UserContext.jsx'
 //SERVICES
 import blogService from './services/blogs'
 import loginService from './services/login'
@@ -21,16 +19,13 @@ import LoginForm from './components/LoginForm.jsx'
 const App = () => {
   //REACT QUERY
   const queryClient = useQueryClient()
-  //REDUX
-  const dispatch = useDispatch()
   //Blogs state
   const [blogs, setBlogs] = useState([])
   //User login states
   const [user, setUser] = useState(null)
+  const { userDispatch } = useContext(UserContext)
   //Message states
-  const notificationState = useSelector(({notification}) => notification)
-  const Message = notificationState
-  const { notificationDispatch } = useContext(NotificationContext)
+  const { notification, notificationDispatch } = useContext(NotificationContext)
 
   //Get all notes
   const getAllBlogs = async () => {
@@ -63,21 +58,21 @@ const App = () => {
   }, [])
 
   //LOGIN
-  const newUser = useSelector((store) => store.user)
+  const newUser = useContext(UserContext)
   const handleLogin = async (event) => {
     event.preventDefault()
     
     try {
       const user = await loginService.login({
-        username: newUser.username,
-        password: newUser.password
+        username: newUser.user.username,
+        password: newUser.user.password
       })
       window.localStorage.setItem(
         'loggedBlogappUser', JSON.stringify(user)
       )
       blogService.setToken(user.token)
       setUser(user)
-      dispatch(clearInfo())
+      userDispatch({ type: 'CLEAR-USER' })
 
       notificationDispatch({
         type: 'SET',
@@ -197,7 +192,7 @@ const App = () => {
     return (
       <div>
         <h2>Log in to the app to see the blogs</h2>
-        <Notification message={Message}/>
+        <Notification message={notification}/>
         <LoginForm handleSubmit={handleLogin} />
       </div>
     )
@@ -206,7 +201,7 @@ const App = () => {
   return (
     <div>
       <h2>blogs</h2>
-      <Notification message={Message}/>
+      <Notification message={notification}/>
 
       <p>{user.name} logged-in  <button onClick={handleLogout}>logout</button></p>
 

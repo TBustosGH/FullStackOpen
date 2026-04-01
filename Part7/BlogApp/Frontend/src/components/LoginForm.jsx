@@ -1,9 +1,15 @@
-import { useDispatch, useSelector } from 'react-redux'
-import { updatePassword, updateUsername, clearInfo } from '../reducers/userReducer'
+//React Query
+import { useQueryClient } from '@tanstack/react-query'
+import { useContext } from 'react'
+import UserContext from '../contexts/UserContext'
 
 const LoginForm = ({handleSubmit}) => {
-  const dispatch = useDispatch()
-  const user = useSelector((store) => store.user)
+  //const dispatch = useDispatch()
+  //const user = useSelector((store) => store.user)
+  const { user, userDispatch } = useContext(UserContext)
+
+  const usernameFieldValue = user ? user.username : ''
+  const passwordFieldValue = user ? user.password : ''
 
   return(
     <div>
@@ -14,8 +20,11 @@ const LoginForm = ({handleSubmit}) => {
           <input
             data-testid='username'
             type='text'
-            value={user.username}
-            onChange={(event) => dispatch(updateUsername(event.target.value))}
+            value={usernameFieldValue}
+            onChange={(event) => userDispatch({
+              type: 'UPDATE-USERNAME',
+              payload: event.target.value
+            })}
             required
           />
         </div>
@@ -24,8 +33,11 @@ const LoginForm = ({handleSubmit}) => {
           <input
             data-testid='password'
             type='password'
-            value={user.password}
-            onChange={(event) => dispatch(updatePassword(event.target.value))}
+            value={passwordFieldValue}
+            onChange={(event) => userDispatch({
+              type: 'UPDATE-PASSWORD',
+              payload: event.target.value
+            })}
             required
           />
         </div>
