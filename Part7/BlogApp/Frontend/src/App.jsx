@@ -22,7 +22,8 @@ import {
 import Home from './components/Home.jsx'
 import Notification from './components/Notification'
 import LoginForm from './components/LoginForm.jsx'
-import Users from './components/Users.jsx'
+import { Users, User } from './components/Users.jsx'
+
 
 
 const App = () => {
@@ -121,6 +122,7 @@ const App = () => {
       <Routes>
         <Route path='/' element={user ? <Home user={user}/> : <Navigate replace to='/login' />} />
         <Route path='/users' element={user ? <Users /> : <Navigate replace to='/login' />} />
+        <Route path='/users/:id' element={user ? <User /> : <Navigate replace to='/login' />} />
         <Route path='/login' element={<LoginForm handleSubmit={handleLogin} />} />
       </Routes>
 

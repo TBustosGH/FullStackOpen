@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
-import { getUsers } from '../services/users'
-
+import { getUsers, getUserById } from '../services/users'
+import { Link, useMatch } from 'react-router-dom'
 import {
     TableBody,
     TableContainer,
@@ -9,7 +9,40 @@ import {
     TableCell
 } from '@mui/material'
 
-const Users = () => {
+export const User = () => {
+    const match = useMatch('/users/:id')
+    const id = match.params.id
+    const [user, setUser] = useState(null)
+    useEffect(() => {
+        const get = async () => {
+            const data = await getUserById({ id })
+            setUser(data)
+        }
+        get()
+    }, [])
+
+    if (!user) {
+        return(
+            <div>
+                <p>Cargando...</p>
+            </div>
+        )
+    }
+    return (
+        <div>
+            <h2>{user.username}</h2>
+            <p>{user.name}</p>
+            <h4>Added blogs</h4>
+            <ul>
+                {user.blogs.map(blog => (
+                    <li key={blog.id}>{blog.title}</li>
+                ))}
+            </ul>
+        </div>
+    )
+}
+
+export const Users = () => {
     let users = null
     const [usersState, setUsersState] = useState(null)
     useEffect(() => {
@@ -44,7 +77,7 @@ const Users = () => {
                         {usersState.map(user => 
                             <TableRow key={user.id}>
                                 <TableCell>
-                                    { user.username }
+                                    <Link to={`/users/${user.id}`}>{ user.username }</Link>
                                 </TableCell>
                                 <TableCell>
                                     { user.blogs.length }
@@ -58,4 +91,3 @@ const Users = () => {
     )
 }
 
-export default Users
