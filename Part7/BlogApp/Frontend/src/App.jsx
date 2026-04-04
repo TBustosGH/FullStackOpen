@@ -1,6 +1,5 @@
-import { useState, useEffect, useRef, } from 'react'
-//REACT QUERY
-import { useQueryClient } from '@tanstack/react-query'
+import { useState, useEffect } from 'react'
+
 import { useContext } from 'react'
 //CONTEXT
 import NotificationContext from './contexts/NotificationContext.jsx'
@@ -19,21 +18,16 @@ import {
   useMatch
 } from 'react-router-dom'
 //COMPONENTS
-import Home from './components/Home.jsx'
 import Notification from './components/Notification'
 import LoginForm from './components/LoginForm.jsx'
 import { Users, User } from './components/Users.jsx'
 import { Blog, Blogs } from './components/Blog.jsx'
-
+import { Navbar } from './components/Navbar.jsx'
 
 
 const App = () => {
-  //REACT QUERY
-  const queryClient = useQueryClient()
   //VIEWS
   const navigate = useNavigate()
-  //Blogs state
-  const [blogs, setBlogs] = useState([])
   //User login states
   const [user, setUser] = useState(null)
   const { userDispatch } = useContext(UserContext)
@@ -117,15 +111,13 @@ const App = () => {
   return (
     <div>
       <h2>blogs</h2>
-      <p>{user.name} logged-in  <button onClick={handleLogout}>logout</button></p>
-
+      <Navbar user={user} logout={handleLogout} />
       <Notification message={notification}/>
       <Routes>
-        <Route path='/' element={user ? <Home user={user}/> : <Navigate replace to='/login' />} />
+        <Route path='/' element={<Blogs />} />
         <Route path='/users' element={user ? <Users /> : <Navigate replace to='/login' />} />
         <Route path='/users/:id' element={user ? <User /> : <Navigate replace to='/login' />} />
         <Route path='/login' element={<LoginForm handleSubmit={handleLogin} />} />
-        <Route path='/blogs' element={<Blogs />} />
         <Route path='/blogs/:id' element={<Blog />} />
       </Routes>
 
