@@ -24,7 +24,7 @@ export const User = () => {
     if (!user) {
         return(
             <div>
-                <p>Cargando...</p>
+                <p>Loading user...</p>
             </div>
         )
     }
@@ -56,7 +56,7 @@ export const Users = () => {
     if (!usersState) {
         return (
             <div>
-                <h3>No users found!</h3>
+                <p>Loading users...</p>
             </div>
         )
     }

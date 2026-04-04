@@ -11,6 +11,17 @@ const getAll = () => {
   const request = axios.get(baseUrl)
   return request.then(response => response.data)
 }
+const getBlogById = async (id) => {
+  try {
+    const response = await fetch(`${baseUrl}/${id}`)
+
+    if (!response.ok) throw new Error('Failed to get a blog from the server!')
+
+    return response.json()
+  } catch (error) {
+    console.log(error)
+  }
+}
 const create = async newObject => {
   const config = {
     headers: { Authorization: token }
@@ -30,4 +41,4 @@ const deleteBlog = (id) => {
   return request.then(response => response.data)
 }
 
-export default { setToken, getAll, create, update, deleteBlog }
+export default { setToken, getAll, getBlogById, create, update, deleteBlog }

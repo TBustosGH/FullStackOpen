@@ -23,6 +23,7 @@ import Home from './components/Home.jsx'
 import Notification from './components/Notification'
 import LoginForm from './components/LoginForm.jsx'
 import { Users, User } from './components/Users.jsx'
+import { Blog, Blogs } from './components/Blog.jsx'
 
 
 
@@ -124,6 +125,8 @@ const App = () => {
         <Route path='/users' element={user ? <Users /> : <Navigate replace to='/login' />} />
         <Route path='/users/:id' element={user ? <User /> : <Navigate replace to='/login' />} />
         <Route path='/login' element={<LoginForm handleSubmit={handleLogin} />} />
+        <Route path='/blogs' element={<Blogs />} />
+        <Route path='/blogs/:id' element={<Blog />} />
       </Routes>
 
       
