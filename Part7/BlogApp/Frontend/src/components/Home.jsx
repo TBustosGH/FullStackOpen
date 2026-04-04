@@ -1,5 +1,9 @@
 import { useState, useEffect, useRef } from 'react'
-
+//REACT QUERY
+import { useQueryClient } from '@tanstack/react-query'
+import { useContext } from 'react'
+//CONTEXTS
+import NotificationContext from '../contexts/NotificationContext'
 //SERVICES
 import blogService from '../services/blogs'
 //Components
@@ -10,7 +14,10 @@ import Blog from './Blog'
 
 const Home = ({ user }) => {
     const [blogs, setBlogs] = useState([])
-    
+    const queryClient = useQueryClient()
+    //Message states
+    const { notification, notificationDispatch } = useContext(NotificationContext)
+
     //Get all notes
     const getAllBlogs = async () => {
         try {

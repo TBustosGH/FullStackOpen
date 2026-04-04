@@ -10,17 +10,23 @@ import {
 } from '@mui/material'
 
 const Users = () => {
-    const [users, setUsers] = useState([])
-
+    let users = null
+    const [usersState, setUsersState] = useState(null)
     useEffect(() => {
         const get = async () => {
-            const request = await getUsers()
-            return request
+            users = await getUsers()
+            setUsersState(users)
         }
+        get()
         
-        setUsers(get())
     }, [])
-
+    if (!usersState) {
+        return (
+            <div>
+                <h3>No users found!</h3>
+            </div>
+        )
+    }
     return (
         <div>
             <h2>Users</h2>
@@ -35,16 +41,16 @@ const Users = () => {
                                 <h3>Blogs created</h3>
                             </TableCell>
                         </TableRow>
-                        {Object.keys(users).forEach((key) => {
-                            <TableRow>
+                        {usersState.map(user => 
+                            <TableRow key={user.id}>
                                 <TableCell>
-                                    {users[key].username}
+                                    { user.username }
                                 </TableCell>
                                 <TableCell>
-                                    {users[key].blogs.length}
+                                    { user.blogs.length }
                                 </TableCell>
                             </TableRow>
-                        })}
+                        )}
                     </TableBody>
                 </Table>
             </TableContainer>
