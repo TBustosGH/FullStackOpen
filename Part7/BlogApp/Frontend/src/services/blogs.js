@@ -33,6 +33,27 @@ const update = (id, newObject) => {
   const request = axios.put(`${baseUrl}/${id}`, newObject)
   return request.then(response => response.data)
 }
+const postComment = async (id, comment) => {
+  const config = {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(comment)
+  }
+
+  try {
+    const request = await fetch(`${baseUrl}/${id}/comments`, config)
+
+    if (!request.ok) {
+      throw new Error('Failed to post a comment!')
+    }
+
+    return request.json()
+  } catch (error) {
+    console.log(error)
+  }
+}
 const deleteBlog = (id) => {
   const config = {
     headers: { Authorization: token }
@@ -41,4 +62,4 @@ const deleteBlog = (id) => {
   return request.then(response => response.data)
 }
 
-export default { setToken, getAll, getBlogById, create, update, deleteBlog }
+export default { setToken, getAll, getBlogById, create, update, postComment, deleteBlog }

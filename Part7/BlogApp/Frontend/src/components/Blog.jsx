@@ -2,7 +2,6 @@ import { useState, useEffect, useRef } from 'react'
 import { Link, useMatch } from 'react-router-dom'
 import blogService from '../services/blogs'
 //REACT QUERY
-import { useQueryClient } from '@tanstack/react-query'
 import { useContext } from 'react'
 //CONTEXTS
 import NotificationContext from '../contexts/NotificationContext'
@@ -10,6 +9,51 @@ import NotificationContext from '../contexts/NotificationContext'
 import Togglable from './Togglable'
 import BlogForm from './BlogForm'
 
+const CommentForm = ({ blog }) => {
+  const { notification, notificationDispatch } = useContext(NotificationContext)
+  const [newComment, setComment] = useState('')
+
+  const onChange = (event) => {
+    setComment(event.target.value)
+  }
+  const onSubmmitForm = async (event) => {
+    event.preventDefault()
+    const blogId = blog.id
+    const comment = {
+      content: newComment,
+      id: blog.comments.length + 1
+    }
+
+    try {
+      await blogService.postComment(blogId, comment)
+      setComment('')
+
+      notificationDispatch({
+        type: 'SET',
+        payload: 'Your comment has been posted properly!'
+      })
+      setTimeout(() => {
+        notificationDispatch({ type: 'ERASE' })
+      }, 5000)
+    } catch (error) {
+      console.log(error)
+      notificationDispatch({
+        type: 'SET',
+        payload: 'There was an error while trying to post your comment'
+      })
+      setTimeout(() => {
+        notificationDispatch({ type: 'ERASE' })
+      }, 5000)
+    }
+
+  }
+  return (
+    <form onSubmit={onSubmmitForm}>
+      <input type='text' value={newComment} onChange={onChange} placeholder='comment here!' />
+      <input type='submit' />
+    </form>
+  )
+}
 
 export const Blog = () => {
   const [blog, setBlog] = useState(null)
@@ -92,6 +136,7 @@ export const Blog = () => {
       <p>Added by {blog.author.username || author}</p>
       <br />
       <h3>Comments</h3>
+      <CommentForm blog={blog}/>
       {blog.comments.length >= 1
       ? <div>
         <ul>
