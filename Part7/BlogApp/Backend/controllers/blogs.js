@@ -10,7 +10,7 @@ const middleware = require('../utils/middleware')
 
 blogsRouter.get('/', (request, response, next) => {
     Blog
-        .find({}).populate('author', { username: 1, name: 1, id: 1 })
+        .find({}).populate('author', { username: 1, name: 1, id: 1, comments: 1 })
         .then(blogs => {
             response.json(blogs)
         })
@@ -39,7 +39,8 @@ blogsRouter.post('/', middleware.userExtractor, async (request, response, next) 
         title: body.title,
         author: user.id,
         url: body.url || 'No url given',
-        likes: body.likes || 0
+        likes: body.likes || 0,
+        comments: []
     })
     
     const savedBlog = await blog.save()
@@ -48,6 +49,40 @@ blogsRouter.post('/', middleware.userExtractor, async (request, response, next) 
 
     response.status(201).json(savedBlog)
 })
+blogsRouter.post('/:id/comments', async (request, response, next) => {
+    const newComment = request.body
+    const blogId = request.params.id
+    console.log('ID: ', newComment.id)
+    console.log('CONTENT: ', newComment.content)
+    console.log('BLOG ID: ', blogId)
+
+    if (!newComment.id) {
+        response.status(400).json({ error: 'No URL given' })
+    }else if (!newComment.content) {
+        response.status(400).json({ error: 'No content given' })
+    }
+
+    try {
+        const blog = await Blog.findById(blogId).populate('author')
+
+        const updatedBlog = {
+            title: blog.title,
+            author: blog.author,
+            url: blog.url,
+            likes: blog.likes,
+            id: blog.id,
+            comments: blog.comments.concat(newComment)
+        }
+
+        console.log('UPDATE: ', updatedBlog)
+        const savedBlog = await Blog.findByIdAndUpdate(blogId, updatedBlog, { new: true, runValidators: true })
+        response.json(savedBlog)
+    } catch (exception) {
+        next(exception)
+    }
+
+})
+
 blogsRouter.delete('/:id', middleware.userExtractor, async (request, response, next) => {
     //blog to delete info
     const blogId = request.params.id
@@ -78,7 +113,8 @@ blogsRouter.put('/:id', async (request, response, next) => {
         author: body.author,
         url: body.url,
         likes: body.likes,
-        id: body.id
+        id: body.id,
+        comments: body.comments || []
     }
 
     //update operation

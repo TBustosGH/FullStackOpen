@@ -61,7 +61,8 @@ export const Blog = () => {
         author: blog.author.id,
         url: blog.url,
         likes: blog.likes + 1,
-        id: blog.id
+        id: blog.id,
+        comments: blog.comments
       }
       const updatedBlog = await blogService.update(blog.id, blogWithUpdatedLikes)
       author = blog.author.username
@@ -89,6 +90,18 @@ export const Blog = () => {
       }
       <p>{blog.likes} likes <button onClick={() => updateLikes(blog)}>like</button></p>
       <p>Added by {blog.author.username || author}</p>
+      <br />
+      <h3>Comments</h3>
+      {blog.comments.length >= 1
+      ? <div>
+        <ul>
+          {blog.comments.map(comment => (
+              <li key={comment.id}>{comment.content}</li>
+            ))}
+        </ul>
+      </div>
+      : <p>No comments yet. Be the first to comment this blog!</p>
+      }
     </div>
   )
 }
