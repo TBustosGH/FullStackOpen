@@ -1,14 +1,55 @@
 import { useEffect, useState } from 'react'
-import { useQuery } from '@apollo/client/react'
+import { useQuery, useMutation } from '@apollo/client/react'
 //QUERIES
-import { ALL_AUTHORS } from '../queries/queries.js'
+import { ALL_AUTHORS, EDIT_AUTHOR_BIRTHDAY } from '../queries/queries.js'
+
+const EditAuthorForm = () => {
+    const [name, setName] = useState('')
+    const [born, setBorn] = useState('')
+
+    const [editAuthor] = useMutation(EDIT_AUTHOR_BIRTHDAY, {
+        refetchQueries: [{ query: ALL_AUTHORS }]
+    })
+
+    const handleSubmit = (event) => {
+        event.preventDefault()
+
+        editAuthor({ variables: { name, setBornTo: born }})
+        setName('')
+        setBorn('')
+    }
+
+
+    return (
+        <div>
+            <h3>Set birthyear</h3>
+            <form onSubmit={handleSubmit}>
+                <div>
+                    name
+                    <input
+                        type='text'
+                        name='name'
+                        value={name}
+                        onChange={({ target }) => setName(target.value)}
+                    />
+                </div>
+                <div>
+                    born
+                    <input
+                        type='number'
+                        name='born'
+                        value={born}
+                        onChange={({ target }) => setBorn(Number(target.value))}
+                    />
+                </div>
+                <input type='submit' value='update author'/>
+            </form>
+        </div>
+    )
+}
 
 
 const Authors = (props) => {
-  if (!props.show) {
-    return null
-  }
-
   const result = useQuery(ALL_AUTHORS)
   const [authors, setAuthors] = useState([])
 
@@ -18,6 +59,10 @@ const Authors = (props) => {
       }
   }, [result])
 
+
+  if (!props.show) {
+      return null
+  }
 
   if (result.loading) {
       return <div>loading...</div>
@@ -42,6 +87,8 @@ const Authors = (props) => {
           ))}
         </tbody>
       </table>
+
+      <EditAuthorForm />
     </div>
   )
 }
