@@ -1,8 +1,10 @@
 {
   "ExpandedNodes": [
     "",
-    "\\src"
+    "\\src",
+    "\\src\\components",
+    "\\src\\queries"
   ],
-  "SelectedNode": "\\src\\App.jsx",
+  "SelectedNode": "\\src\\queries\\queries.js",
   "PreviewInSolutionExplorer": false
 }
