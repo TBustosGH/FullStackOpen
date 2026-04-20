@@ -1,7 +1,26 @@
+//GRAPHQL & APOLLOSERVER
 const { ApolloServer } = require('@apollo/server')
 const { startStandaloneServer } = require('@apollo/server/standalone')
 const { v1: uuid } = require('uuid')
 const { GraphQLError, GRAPHQL_MAX_INT } = require('graphql')
+//MONGODB & MONGOOSE
+const mongoose = require('mongoose')
+mongoose.set('strictQuery', false)
+const Person = require('./models/person')
+//DOTENV
+require('dotenv').config()
+//GET MONGODB URL from dotenv
+const MONGODB_URI = process.env.MONGODB_URI
+console.log('connecting to ', MONGODB_URI)
+//CONNECT TO MONGODB
+mongoose.connect(MONGODB_URI)
+    .then(() => {
+        console.log('connected to MongoDB')
+    })
+    .catch((error) => {
+        console.log('error connection to MongoDB ', error.message)
+    })
+
 
 let authors = [
     {
@@ -128,66 +147,49 @@ const typeDefs = `
 
 const resolvers = {
     Query: {
-        authorCount: () => authors.length,
-        allAuthors: () => authors,
-        bookCount: () => books.length,
-        allBooks: (root, args) =>{
-            if (!args.author && !args.genre) {
-                return books
+        personCount: async () => Person.collection.countDocuments(),
+        allPersons: async (rot, args) => {
+            if (!args.phone) {
+                return Person.find({})
             }
-            else if (!args.genre) {
-                return books.filter(n => n.author === args.author)
-            }
-            else if (!args.author) {
-                return books.filter(n => n.genres.find(g => g === args.genre))
-            }
-            return books.filter(n => n.author === args.author && n.genres.find(g => g === args.genre))
-        } 
+
+            return Person.find({ phone: { $exists: args.phone === 'YES' } })
+        },
+        findPerson: async (root, args) => Person.findOne({ name: args.name })
     },
-    Author: {
-        bookCount: (root) => {
-            const booksByAuthor = books.filter(n => n.author === root.name)
-            return booksByAuthor.length
+    Person: {
+        address: (root) => {
+            return {
+                street: root.street,
+                city: root.city
+            }
         }
     },
     Mutation: {
-        addAuthor: (root, args) => {
-            if (authors.find(a => a.name === args.name)) {
-                throw new GraphQLError('Author already exist in DB!', {
-                    extensions: {
-                        code: 'BAD_USER_INPUT',
-                        invlidArgs: args.name
-                    }
-                })
-            }
-            const author = { ...args, id: uuid() }
-            authors = authors.concat(author)
-            return author
-        },
-        editAuthor: (root, args) => {
-            if (!authors.find(a => a.name === args.name)) {
-                throw new GraphQLError('Couldn`t find author to edit!', {
-                    extensions: {
-                        code: 'BAD_USER_INPUT',
-                        invalidArgs: args.name
-                    }
+        addPerson: async (root, args) => {
+            const person = new Person({ ...args })
+
+            try {
+                await person.save()
+            } catch (error) {
+                throw new UserInputError(error.message, {
+                    invalidArgs: args
                 }) 
             }
-
-            const updatedAuthors = authors.map(a => a.name === args.name ? { ...a, born: args.setBornTo} : a)
-            console.log(updatedAuthors)
-            authors = updatedAuthors
-            const updatedAuthor = authors.find(a => a.name === args.name)
-            return updatedAuthor
+            return person
         },
-        addBook: (root, args) => {
-            if (!authors.find(a => a.name === args.author)) {
-                const author = { name: args.author, id: uuid() }
-                authors = authors.concat(author)
+        editNumber: async (root, args) => {
+            const person = await Person.findOne({ name: args.name })
+            person.phone = args.phone
+
+            try {
+                await person.save()
+            } catch (error) {
+                throw new UserInputError(error.message, {
+                    invalidArgs: args
+                })
             }
-            const newBook = { ...args, id: uuid() }
-            books = books.concat(newBook)
-            return newBook
+            return person
         }
     }
 }
