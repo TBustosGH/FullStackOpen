@@ -13,12 +13,12 @@ const schema = new mongoose.Schema({
     },
     street: {
         type: String,
-        required: true,
+        required: false,
         minlength: 5
     },
     city: {
         type: String,
-        required: true,
+        required: false,
         minlength: 3
     }
 })

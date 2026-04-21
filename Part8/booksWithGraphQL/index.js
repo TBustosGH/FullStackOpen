@@ -6,7 +6,9 @@ const { GraphQLError, GRAPHQL_MAX_INT } = require('graphql')
 //MONGODB & MONGOOSE
 const mongoose = require('mongoose')
 mongoose.set('strictQuery', false)
+const jwt = require('jsonwebtoken')
 const Person = require('./models/person')
+const User = require('./models/User')
 //DOTENV
 require('dotenv').config()
 //GET MONGODB URL from dotenv
@@ -103,11 +105,12 @@ let books = [
 
 
 const typeDefs = `
-    type Author {
+    type Person {
         name: String!
         born: Int
         id: ID!
         bookCount: Int!
+        phone: String!
     }
     
     type Book {
@@ -118,30 +121,43 @@ const typeDefs = `
         genres: [String!]!
     }
 
+    type User {
+        username: String!
+        friends: [Person!]!
+        id: ID!
+    }
+
+    type Token {
+        value: String!
+    }
+
     type Query {
-        authorCount: Int!
-        allAuthors: [Author!]!
-        bookCount: Int!
-        allBooks(author: String, genre: String): [Book!]!
+        personCount: Int!
+        allPersons: [Person!]!
+        findPerson(name: String!): Person!
+        me: User
     }
 
     type Mutation {
-        addAuthor(
+        addPerson(
             name: String!
             born: String
             id: ID!
-        ): Author
-        editAuthor(
+        ): Person
+        editNumber(
             name: String!
-            setBornTo: Int!
-        ): Author
-        addBook(
-            title: String!
-            author: String!
-            published: Int!
-            genres: [String!]!
-            id: ID!
-        ): Book
+            phone: String!
+        ): Person
+        createUser(
+            username: String!
+        ): User
+        login(
+            username: String!
+            password: String!
+        ): Token
+        addAsFriend(
+            name: String!
+        ): User
     }
 `
 
@@ -155,26 +171,37 @@ const resolvers = {
 
             return Person.find({ phone: { $exists: args.phone === 'YES' } })
         },
-        findPerson: async (root, args) => Person.findOne({ name: args.name })
-    },
-    Person: {
-        address: (root) => {
-            return {
-                street: root.street,
-                city: root.city
-            }
+        findPerson: async (root, args) => Person.findOne({ name: args.name }),
+        me: (root, args, context) => {
+            return context.currentUser
         }
     },
     Mutation: {
-        addPerson: async (root, args) => {
+        addPerson: async (root, args, context) => {
             const person = new Person({ ...args })
+            const currentUser = context.currentUser
+
+            if (!currentUser) {
+                throw new GraphQLError('not authenticated', {
+                    extensions: {
+                        code: 'BAD_USER_INPUT'
+                    }
+                })
+            }
 
             try {
                 await person.save()
+                currentUser.friends = currentUser.friends.concat(person)
+                await currentUser.save()
             } catch (error) {
-                throw new UserInputError(error.message, {
-                    invalidArgs: args
-                }) 
+                console.log(error)
+                throw new GraphQLError('saving user failed', {
+                    extensions: {
+                        code: 'BAD_USER_INPUT',
+                        invalidArgs: args.name,
+                        error
+                    }
+                })
             }
             return person
         },
@@ -190,6 +217,58 @@ const resolvers = {
                 })
             }
             return person
+        },
+        createUser: async (root, args) => {
+            const user = new User({ username: args.username })
+
+            return user.save()
+                .catch(error => {
+                    throw new GraphQLError('Creating the user failed', {
+                        extensions: {
+                            code: 'BAD_USER_INPUT',
+                            invalidArgs: args.name,
+                            error
+                        }
+                    })
+                })
+        },
+        login: async (root, args) => {
+            const user = await User.findOne({ username: args.username })
+
+            if (!user || args.password !== 'secret') {
+                throw new GraphQLError('wrong credentials', {
+                    extensions: {
+                        code: 'BAD_USER_INPUT'
+                    }
+                })
+            }
+
+            const userForToken = {
+                username: user.username,
+                id: user._id
+            }
+
+            return { value: jwt.sign(userForToken, process.env.JWT_SECRET) }
+        },
+        addAsFriend: async (root, args, { currentUser }) => {
+            const isFriend = (person) => {
+                currentUser.friends.map(f => f._id.toString()).includes(person._id.toString())
+            }
+
+            if (!currentUser) {
+                throw new GraphQLError('wrong credentials', {
+                    extensions: { code: 'BAD_USER_INPUT'}
+                })
+            }
+
+            const person = await Person.findOne({ name: args.name })
+            if (!isFriend(person)) {
+                currentUser.friends = currentUser.friends.concat(person)
+            }
+
+            await currentUser.save()
+
+            return currentUser
         }
     }
 }
@@ -201,6 +280,18 @@ const server = new ApolloServer({
 
 startStandaloneServer(server, {
     listen: { port: 4000 },
+    context: async ({ req, res }) => {
+        const auth = req ? req.headers.authorization : null
+
+        if (auth && auth.startsWith('Bearer ')) {
+            const decodedToken = jwt.verify(
+                auth.substring(7), process.env.JWT_SECRET
+            )
+            const currentUser = await User
+                .findById(decodedToken.id).populate('friends')
+            return { currentUser }
+        }
+    }
 }).then(({ url }) => {
     console.log(`Server ready at ${url}`)
 })

@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { useLazyQuery, useQuery, useMutation } from '@apollo/client/react'
+import { useLazyQuery, useQuery } from '@apollo/client/react'
 
 //COMPONENTS
 import PersonForm from './components/PersonForm'
@@ -16,8 +16,11 @@ const Persons = ({ persons }) => {
   }
 
   useEffect(() => {
+      const updatePerson = ({ result }) => {
+        setPerson(result.data.findPerson)
+    }
     if (result.data) {
-      setPerson(result.data.findPerson)
+      updatePerson(result)
     }
   }, [result])
 
