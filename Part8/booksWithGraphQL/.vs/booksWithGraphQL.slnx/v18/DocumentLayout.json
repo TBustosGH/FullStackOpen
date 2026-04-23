@@ -7,8 +7,12 @@
       "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:index.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\Casa\\Desktop\\Repositorios\\FullStackOpen\\Part8\\booksWithGraphQL\\.env||{8B382828-6202-11D1-8870-0000F87579D2}",
-      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:.env||{8B382828-6202-11D1-8870-0000F87579D2}"
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\Casa\\Desktop\\Repositorios\\FullStackOpen\\Part8\\booksWithGraphQL\\models\\Book.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:models\\Book.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\Casa\\Desktop\\Repositorios\\FullStackOpen\\Part8\\booksWithGraphQL\\models\\Author.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:models\\Author.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}"
     }
   ],
   "DocumentGroupContainers": [
@@ -18,19 +22,33 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 1,
+          "SelectedChildIndex": 2,
           "Children": [
             {
               "$type": "Document",
               "DocumentIndex": 1,
-              "Title": ".env",
-              "DocumentMoniker": "C:\\Users\\Casa\\Desktop\\Repositorios\\FullStackOpen\\Part8\\booksWithGraphQL\\.env",
-              "RelativeDocumentMoniker": ".env",
-              "ToolTip": "C:\\Users\\Casa\\Desktop\\Repositorios\\FullStackOpen\\Part8\\booksWithGraphQL\\.env",
-              "RelativeToolTip": ".env",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAABeAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001001|",
-              "WhenOpened": "2026-04-23T01:11:35.965Z"
+              "Title": "Book.js",
+              "DocumentMoniker": "C:\\Users\\Casa\\Desktop\\Repositorios\\FullStackOpen\\Part8\\booksWithGraphQL\\models\\Book.js",
+              "RelativeDocumentMoniker": "models\\Book.js",
+              "ToolTip": "C:\\Users\\Casa\\Desktop\\Repositorios\\FullStackOpen\\Part8\\booksWithGraphQL\\models\\Book.js",
+              "RelativeToolTip": "models\\Book.js",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001646|",
+              "WhenOpened": "2026-04-23T13:32:33.512Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "Author.js",
+              "DocumentMoniker": "C:\\Users\\Casa\\Desktop\\Repositorios\\FullStackOpen\\Part8\\booksWithGraphQL\\models\\Author.js",
+              "RelativeDocumentMoniker": "models\\Author.js",
+              "ToolTip": "C:\\Users\\Casa\\Desktop\\Repositorios\\FullStackOpen\\Part8\\booksWithGraphQL\\models\\Author.js",
+              "RelativeToolTip": "models\\Author.js",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAcAAAAIAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001646|",
+              "WhenOpened": "2026-04-23T13:23:18.99Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
@@ -40,7 +58,7 @@
               "RelativeDocumentMoniker": "index.js",
               "ToolTip": "C:\\Users\\Casa\\Desktop\\Repositorios\\FullStackOpen\\Part8\\booksWithGraphQL\\index.js",
               "RelativeToolTip": "index.js",
-              "ViewState": "AgIAAHgAAAAAAAAAAAAAAJoAAAArAAAAAAAAAA==",
+              "ViewState": "AgIAAAwAAAAAAAAAAAAcwHcAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001646|",
               "WhenOpened": "2026-04-23T00:08:00.489Z",
               "EditorCaption": ""

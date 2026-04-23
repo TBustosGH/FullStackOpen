@@ -163,9 +163,13 @@ const resolvers = {
                 id: uuid()
             })
 
+            
             try {
-                await newAuthor.save()
-                return newAuthor
+                if (!(newAuthor.name.length < 4)) {
+                    await newAuthor.save()
+                    return newAuthor
+                }
+                throw new GraphQLError('Author`s name too short! must be at least 4 digits long')
             } catch (error) {
                 return new GraphQLError('Error trying to save new author', {
                     extensions: {
@@ -183,18 +187,20 @@ const resolvers = {
                 id: uuid(),
                 author: author._id
             })
+
             try {
-                await newBook.save()
-                //return { ...newBook._doc, author: author, id: newBook._id}
-            } catch {
-                (error) => {
-                    return new GraphQLError('Error trying to save new book', {
-                        extensions: {
-                            invalidArgs: args,
-                            error
-                        }
-                    })
+                if (!(newBook.title.length < 5)) {
+                    await newBook.save()
+                    return { ...newBook._doc, author: author, id: newBook._id}
                 }
+                throw new GraphQLError('Book`s name too short! must be at least 5 digits long')
+            } catch (error) {
+                return new GraphQLError('Error trying to save new book', {
+                    extensions: {
+                        invalidArgs: args,
+                        error
+                    }
+                })
             }
         }
     }
