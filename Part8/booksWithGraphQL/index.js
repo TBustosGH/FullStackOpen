@@ -3,6 +3,24 @@ const { ApolloServer } = require('@apollo/server')
 const { startStandaloneServer } = require('@apollo/server/standalone')
 const { v1: uuid } = require('uuid')
 const { GraphQLError, GRAPHQL_MAX_INT } = require('graphql')
+//MONGOOSE & MODELS
+const mongoose = require('mongoose')
+mongoose.set('strictQuery', false)
+mongoose.set('strictPopulate', false)
+const jwt = require('jsonwebtoken')
+const Author = require('./models/Author.js')
+const Book = require('./models/Book.js')
+//DOTENV
+require('dotenv').config()
+const MONGODB_URI = process.env.MONGODB_URI
+console.log('connecting to ', MONGODB_URI)
+mongoose.connect(MONGODB_URI)
+    .then(() => {
+        console.log('connected to MongoDB')
+    })
+    .catch((error) => {
+        console.log('error! connectioto MongoDB failed \n ', error.message)
+    })
 
 let authors = [
     {
@@ -95,7 +113,7 @@ const typeDefs = `
     type Book {
         title: String!
         published: Int!
-        author: String!
+        author: Author!
         id: ID!
         genres: [String!]!
     }
@@ -127,7 +145,7 @@ const typeDefs = `
 const resolvers = {
     Query: {
         authorCount: () => authors.length,
-        allAuthors: () => authors,
+        allAuthors: async () => Author.find({}),
         findAuthor: (root, args) => {
             const foundAuthor = authors.find(a => a.name === args.name)
 
@@ -142,7 +160,7 @@ const resolvers = {
             return foundAuthor
         }, 
         bookCount: () => books.length,
-        allBooks: () => books,
+        allBooks: async () => Book.find({}).populate('Author'),
         findBook: (root, args) => {
             const foundBook = books.find(b => b.title === args.title)
 
@@ -158,15 +176,45 @@ const resolvers = {
         }
     },
     Mutation: {
-        addAuthor: (root, args, context) => {
-            const newAuthor = { ...args, id: uuid() }
-            authors = authors.concat(newAuthor)
-            return newAuthor
+        addAuthor: async (root, args) => {
+            const newAuthor = new Author({
+                ...args,
+                id: uuid()
+            })
+
+            try {
+                await newAuthor.save()
+                return newAuthor
+            } catch (error) {
+                return new GraphQLError('Error trying to save new author', {
+                    extensions: {
+                        invalidArgs: args,
+                        error
+                    }
+                })
+            }
+            
         },
-        addBook: (root, args) => {
-            const newBook = { ...args, id: uuid() }
-            books = books.concat(newBook)
-            return newBook
+        addBook: async (root, args) => {
+            const author = await Author.findOne({ name: args.author })
+            const newBook = new Book({
+                ...args,
+                id: uuid(),
+                author: author._id
+            })
+            try {
+                await newBook.save()
+                //return { ...newBook._doc, author: author, id: newBook._id}
+            } catch {
+                (error) => {
+                    return new GraphQLError('Error trying to save new book', {
+                        extensions: {
+                            invalidArgs: args,
+                            error
+                        }
+                    })
+                }
+            }
         }
     }
 }
