@@ -124,7 +124,7 @@ const typeDefs = `
         allAuthors: [Author!]!
         findAuthor(name: String!): Author!
         bookCount: Int!
-        allBooks: [Book!]!
+        allBooks(author: String, genres: [String]): [Book!]!
         findBook(title: String!): Book!
     }
 
@@ -144,36 +144,17 @@ const typeDefs = `
 
 const resolvers = {
     Query: {
-        authorCount: () => authors.length,
+        authorCount: async () => Author.collection.countDocuments(),
         allAuthors: async () => Author.find({}),
-        findAuthor: (root, args) => {
-            const foundAuthor = authors.find(a => a.name === args.name)
-
-            if (!foundAuthor) {
-                return new GraphQLError('no author found', {
-                    extensions: {
-                        invalidArgs: args.name
-                    }
-                })
+        findAuthor: (root, args) => Author.findOne({ name: args.name }), 
+        bookCount: async () => Book.collection.countDocuments(),
+        allBooks: async (root, args) => {
+            if (!args.genres) {
+                return await Book.find({}).populate('Author')
             }
-
-            return foundAuthor
-        }, 
-        bookCount: () => books.length,
-        allBooks: async () => Book.find({}).populate('Author'),
-        findBook: (root, args) => {
-            const foundBook = books.find(b => b.title === args.title)
-
-            if (!foundBook) {
-                return new GraphQLError('no book found', {
-                    extensions: {
-                        invalidArgs: args.title
-                    }
-                })
-            }
-
-            return foundBook
-        }
+            return await Book.find({ genres: { $all: args.genres } }).populate('Author')
+        },
+        findBook: (root, args) => Book.findOne({ title: args.title })
     },
     Mutation: {
         addAuthor: async (root, args) => {
