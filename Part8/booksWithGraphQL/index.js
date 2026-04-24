@@ -15,6 +15,7 @@ const Book = require('./models/Book.js')
 //DOTENV
 require('dotenv').config()
 const MONGODB_URI = process.env.MONGODB_URI
+//CONECCTION TO DB
 console.log('connecting to ', MONGODB_URI)
 mongoose.connect(MONGODB_URI)
     .then(() => {
