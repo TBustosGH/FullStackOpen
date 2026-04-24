@@ -11,7 +11,7 @@ const Authors = (props) => {
 
   useEffect(() => {
       if (result.data) {
-          setAuthors(result.data.allAuthors)
+          setAuthors(result.data.allAuthors)    //eslint-disable-line
       }
   }, [result])
 
@@ -44,7 +44,11 @@ const Authors = (props) => {
         </tbody>
       </table>
 
-          <EditAuthorForm authors={ authors } />
+          {props.token
+              ? <EditAuthorForm authors={authors} />
+              : null
+          }
+          
     </div>
   )
 }
