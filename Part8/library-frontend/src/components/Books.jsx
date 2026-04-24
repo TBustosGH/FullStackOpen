@@ -9,7 +9,7 @@ const Books = (props) => {
 
   useEffect(() => {
       if (result.data) {
-          setBooks(result.data.allBooks)
+          setBooks(result.data.allBooks)    //eslint-disable-line
       }
   }, [result])
 
@@ -34,7 +34,7 @@ const Books = (props) => {
           {books.map((a) => (
             <tr key={a.id}>
               <td>{a.title}</td>
-              <td>{a.author}</td>
+              <td>{a.author.name}</td>
               <td>{a.published}</td>
             </tr>
           ))}
