@@ -2,8 +2,9 @@
   "ExpandedNodes": [
     "",
     "\\src",
-    "\\src\\components"
+    "\\src\\components",
+    "\\src\\queries"
   ],
-  "SelectedNode": "\\src\\components\\Books.jsx",
+  "SelectedNode": "\\src\\queries\\queries.js",
   "PreviewInSolutionExplorer": false
 }

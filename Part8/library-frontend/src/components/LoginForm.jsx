@@ -25,6 +25,7 @@ const LoginForm = ({ show, setToken, setPage }) => {
         
         await login({ variables: { username, password } })
 
+        localStorage.setItem('library-user-name', username)
         setUsername('')
         setPassword('')
         setPage('authors')

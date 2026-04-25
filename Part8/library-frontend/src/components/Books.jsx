@@ -15,7 +15,7 @@ const Books = (props) => {
           setBooks(result.data.allBooks)    //eslint-disable-line
           setSelectedGenre(books)
           let bookGenres = Array()
-          //Somo shitty code filter the genres
+          //Some shitty code to filter the genres
           books.map(b =>
               b.genres.map(g => 
                   bookGenres.includes(g)
@@ -23,12 +23,11 @@ const Books = (props) => {
                       : bookGenres.push(g)
               )
           )
-          setGenres(bookGenres)
-          
+          setGenres(bookGenres)   
       }
   }, [result, books])
 
-  //HANFDLE CLICK ON BUTTONS
+  //HANDLE CLICK ON BUTTONS
   const handleChangeFilter = (genre) => {
     setSelectedGenre(books.filter(book => book.genres.includes(genre)))
   }
