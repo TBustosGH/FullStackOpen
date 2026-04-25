@@ -25,7 +25,7 @@ const App = () => {
                     ? <>
                         <button onClick={() => setPage('add')}>add book</button>
                         <button onClick={logout}>logout</button>
-                      </>
+                    </>
                     : <button onClick={() => setPage('login')}>login</button>
                 }
             </div>
