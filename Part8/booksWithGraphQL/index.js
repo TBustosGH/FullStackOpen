@@ -57,7 +57,7 @@ const typeDefs = `
         findAuthor(name: String!): Author!
         bookCount: Int!
         allBooks(author: String, genres: [String]): [Book!]!
-        findBook(title: String!): Book!
+        findBook(title: String!): Book
         me: User
     }
 
@@ -90,12 +90,12 @@ const resolvers = {
         findAuthor: (root, args) => Author.findOne({ name: args.name }), 
         bookCount: async () => Book.collection.countDocuments(),
         allBooks: async (root, args) => {
-            if (!args.genres) {
-                return await Book.find({}).populate({ path: 'author', strictPopulate: false })
+            if (!args.genres || args.genres.length === 0) {
+                return await Book.find({}).populate('author')
             }
-            return await Book.find({ genres: { $all: args.genres } }).populate('Author')
+            return await Book.find({ genres: { $all: args.genres } }).populate('author')
         },
-        findBook: (root, args) => Book.findOne({ title: args.title }),
+        findBook: (root, args) => Book.findOne({ title: args.title }).populate('author'),
         me: (root, args, context) => {
             return context.currentUser
         }
@@ -131,7 +131,7 @@ const resolvers = {
             }
             
         },
-        addBook: async (root, args) => {
+        addBook: async (root, args, context) => {
             const author = await Author.findOne({ name: args.author })
             const newBook = new Book({
                 ...args,

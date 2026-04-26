@@ -1,19 +1,21 @@
 import { useEffect, useState } from 'react'
 import { useQuery } from '@apollo/client/react'
 //COMPONENTS
-import { ALL_BOOKS } from '../queries/queries.js'
+import { ALL_BOOKS, FIND_BOOKS_BY_GENRE } from '../queries/queries.js'
 
 const Books = (props) => {
-  const [books, setBooks] = useState([])
-  const result = useQuery(ALL_BOOKS)
+  //BOOKS
+    const [books, setBooks] = useState([])    //Store all books
+    const [selectedGenre, setSelectedGenre] = useState([])  //Storage the genres filter for FIND_BOOK_BY_GENRE query 
+    const result = useQuery(FIND_BOOKS_BY_GENRE, {
+        variables: { genres: selectedGenre }
+    })    //Get all books from DB with a filter
   //FILTER
-  const [genres, setGenres] = useState([])
-  const [selectedGenre, setSelectedGenre] = useState(books)
+    const [genres, setGenres] = useState([])    //Store all current books' (saved in books state) genres
 
   useEffect(() => {
       if (result.data) {
           setBooks(result.data.allBooks)    //eslint-disable-line
-          setSelectedGenre(books)
           let bookGenres = Array()
           //Some shitty code to filter the genres
           books.map(b =>
@@ -29,10 +31,12 @@ const Books = (props) => {
 
   //HANDLE CLICK ON BUTTONS
   const handleChangeFilter = (genre) => {
-    setSelectedGenre(books.filter(book => book.genres.includes(genre)))
+      setSelectedGenre(genre)   //Set filter
+      result.refetch()  //Refetch all books with queries
   }
   const handleResetFilter = () => {
-    setSelectedGenre(books)
+    setSelectedGenre([])    //Reset filters
+    result.refetch()    //Refetch all books with no filter
   }
   //DON'T SHOW PAGE IF SHOW IS FALSE
   if (!props.show) {
@@ -54,7 +58,7 @@ const Books = (props) => {
             <th>author</th>
             <th>published</th>
           </tr>
-          {selectedGenre.map((a) => (
+          {books.map((a) => (
             <tr key={a.id}>
               <td>{a.title}</td>
               <td>{a.author.name}</td>
@@ -65,14 +69,13 @@ const Books = (props) => {
       </table>
 
       <div>
-        {genres
+        {selectedGenre.length === 0
         ? <div>
             {genres.map(genre =>
                 <button key={genre} onClick={() => handleChangeFilter(genre)}>{genre}</button>
             )}
-            <button onClick={handleResetFilter}>reset filter</button>
         </div>
-        : null
+        : <button onClick={handleResetFilter}>reset filter</button>
         }
       </div>
     </div>

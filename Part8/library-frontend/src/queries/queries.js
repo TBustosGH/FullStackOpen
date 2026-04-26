@@ -38,6 +38,22 @@ export const ALL_BOOKS = gql`
         }
     }
 `
+export const FIND_BOOKS_BY_GENRE = gql`
+    query filterBooksById(
+        $genres: [String]
+    ) {
+        allBooks(genres: $genres) {
+            title
+            published
+            author {
+                name
+                id
+            }
+            id
+            genres
+        }
+    }
+`
 export const ADD_BOOK = gql`
     mutation createBook(
         $title: String!,
