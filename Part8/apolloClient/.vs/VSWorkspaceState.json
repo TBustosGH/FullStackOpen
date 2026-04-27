@@ -2,9 +2,8 @@
   "ExpandedNodes": [
     "",
     "\\src",
-    "\\src\\components",
-    "\\src\\queries"
+    "\\src\\components"
   ],
-  "SelectedNode": "\\src\\components\\LoginForm.jsx",
+  "SelectedNode": "\\src\\components\\PersonForm.jsx",
   "PreviewInSolutionExplorer": false
 }

@@ -2,6 +2,8 @@ const { ApolloServer } = require('@apollo/server')
 const { startStandaloneServer } = require('@apollo/server/standalone')
 const { v1: uuid } = require('uuid')
 const { GraphQLError } = require('graphql')
+const { PubSub } = require('graphql-subscriptions')
+const pubsub = new PubSub()
 //MONGOOSE
 const mongoose = require('mongoose')
 mongoose.set('strictQuery', false)
@@ -34,6 +36,7 @@ const typeDefs = `#graphql
         name: String!
         phone: String
         address: Address!
+        friendOf: [User!]!
         id: ID!
     }
 
@@ -81,6 +84,10 @@ const typeDefs = `#graphql
             name: String!
         ): User
     }
+
+    type Subscription {
+        personAdded: Person!
+    }
 `
 
 const resolvers = {
@@ -88,9 +95,10 @@ const resolvers = {
         personCount: async () => Person.collection.countDocuments(),
         allPersons: async (root, args) => {
             if (!args.phone) {
-                return Person.find({})
+                return Person.find({}).populate('friendOf')
             }
-            return Person.find({ phone: { $exists: args.phone === 'YES' }})
+            return Person.find({ phone: { $exists: args.phone === 'YES' } })
+                .populate('friendOf')
         },
         findPerson: (root, args) => Person.findOne({ name: args.name }),
         me: (root, args, context) => {
@@ -131,6 +139,8 @@ const resolvers = {
                     }
                 })
             }
+
+            pubsub.publish('PERSON_ADDED', { personAdded: person })
 
             return person
         },
@@ -201,6 +211,11 @@ const resolvers = {
             await currentUser.save()
 
             return currentUser
+        }
+    },
+    Subscription: {
+        personAdded: {
+            subscribe: () => pubsub.asyncIterableIterator(['PERSON_ADDED'])
         }
     }
 }

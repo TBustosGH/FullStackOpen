@@ -1,12 +1,12 @@
 import { useEffect, useState } from 'react'
-import { useLazyQuery, useQuery, useApolloClient } from '@apollo/client/react'
+import { useLazyQuery, useQuery, useSubscription, useApolloClient } from '@apollo/client/react'
 
 //COMPONENTS
 import PersonForm from './components/PersonForm.jsx'
 import PhoneForm from './components/PhoneForm.jsx'
 import LoginForm from './components/LoginForm.jsx'
 //QUERIES
-import { ALL_PERSONS, FIND_PERSON } from './queries/queries'
+import { ALL_PERSONS, FIND_PERSON, PERSONS_ADDED } from './queries/queries'
 
 const Persons = ({ persons }) => {
   const [getPerson, result] = useLazyQuery(FIND_PERSON)
@@ -58,6 +58,27 @@ const App = () => {
     const result = useQuery(ALL_PERSONS)
     const client = useApolloClient()
 
+    const updateCacheWith = (addedPerson) => {
+        const includeIn = (set, object) => 
+            set.map(p => p.id).includes(object.id)
+
+        const dataInStore = client.readQuery({ query: ALL_PERSONS })
+        if (!includeIn(dataInStore.allPersons, addedPerson)) {
+            client.writeQuery({
+                query: ALL_PERSONS,
+                data: { allPersons: dataInStore.allPersons.concat(addedPerson) }
+            })
+        }
+    }
+
+    useSubscription(PERSONS_ADDED, {
+        onData: ({ data }) => {
+            const addedPerson = data.data.PersonAdded
+            notify(`${addedPerson.name} added`)
+            updateCacheWith(addedPerson)
+        }
+    })
+
     const notify = (message) => {
         setErrorMessage(message)
         setTimeout(() => {
@@ -88,7 +109,7 @@ const App = () => {
             <Notify errorMessage={errorMessage} />
             <button onClick={logout}>logout</button>
             <Persons persons={result.data.allPersons} />
-            <PersonForm setError={notify}/>
+            <PersonForm setError={notify} updateCacheWith={updateCacheWith} />
             <PhoneForm setError={notify}/>
         </div>
     )
