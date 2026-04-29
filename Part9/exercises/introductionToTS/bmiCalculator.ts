@@ -13,4 +13,16 @@ const calculatebmi = (height: number, weight: number): string => {
     return 'You\'re not supossed to see this message!';
 }
 
-console.log(calculatebmi(174, 80));
+
+try {
+    const height: number = Number(process.argv[2]);
+    const weight: number = Number(process.argv[3]);
+
+    if (isNaN(height) || isNaN(weight)) {
+        throw new Error('invalid args detected! \nYou\'re supossed to enter your height (cm) and your weight (kg)');
+    }
+
+    console.log(calculatebmi(height, weight));
+} catch (error) {
+    console.log('Something bad happened: ', error);
+}

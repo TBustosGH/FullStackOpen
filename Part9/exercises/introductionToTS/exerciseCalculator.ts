@@ -40,7 +40,28 @@ const calculateExercises = (dailyHours: Array<number>, target: number): exercise
 	}
 }
 
-const exampleArray: Array<number> = [1, 0, 1, 1, 0, 1, 1];
-const exampleTarget: number = 3;
 
-console.log(calculateExercises(exampleArray, exampleTarget));
+try {
+	//GET DATA FROM COMMAND LINE
+	const inputTarget: number = Number(process.argv[2]);
+	const inputArray: Array<string> = (process.argv.slice(3));
+	let trainingDays: Array<number> = [];
+
+	//CHECK IF inputTarget IS VALID
+	if (isNaN(Number(inputTarget))) {
+		throw new Error('invalid args detected in target!');
+	}
+	//CHECK INPUT ARRAY TO SEE IF THERE'S ANY NaN, AND FILL trainingDays ARRAY
+	inputArray.map(n => {
+		if ( !isNaN(Number(n)) ) {
+			trainingDays = trainingDays.concat(Number(n));
+			return null;
+		}
+		throw new Error('invalid args detected!');
+	})
+
+	//EXECUTE calculateExercises
+	console.log(calculateExercises(trainingDays, inputTarget));
+} catch (error) {
+	console.log('Something bad happened: ', error);
+}
