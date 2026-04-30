@@ -1,4 +1,4 @@
-const calculatebmi = (height: number, weight: number): string => {
+export const calculatebmi = (height: number, weight: number): string => {
     const imc = weight / Math.pow(height / 100, 2);
 
     if (imc < 18.5) {
@@ -10,10 +10,10 @@ const calculatebmi = (height: number, weight: number): string => {
     } else if (imc >= 30) {
         return 'Really high (obesity)';
     }
-    return 'You\'re not supossed to see this message!';
+    return 'Something went wrong!';
 }
 
-
+/*
 try {
     const height: number = Number(process.argv[2]);
     const weight: number = Number(process.argv[3]);
@@ -26,3 +26,4 @@ try {
 } catch (error) {
     console.log('Something bad happened: ', error);
 }
+*/
