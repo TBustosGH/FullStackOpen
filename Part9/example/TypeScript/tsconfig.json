@@ -1,6 +1,14 @@
 {
   "compilerOptions": {
+    "target": "es2022",
+    "strict": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noImplicitReturns": true,
+    "noFallthroughCasesInSwitch": true,
     "noImplicitAny": false,
-    "types": ["node"]
+    "esModuleInterop": true,
+    "moduleResolution": "node",
+    "types": [ "node" ]
   }
 }
