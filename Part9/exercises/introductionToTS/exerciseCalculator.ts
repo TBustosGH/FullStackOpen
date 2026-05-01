@@ -8,11 +8,11 @@ interface exerciseValues {
 	ratingDescription: string;
 }
 
-const calculateExercises = (dailyHours: Array<number>, target: number): exerciseValues => {
+export const calculateExercises = (dailyHours: Array<number>, target: number): exerciseValues => {
 	const periodLength: number = dailyHours.length;
 	const trainingDays: number = dailyHours.filter(h => h > 0).length;
 	let totalTrainingHours: number = 0;
-	dailyHours.map(h => totalTrainingHours += h);
+	dailyHours.map(h => totalTrainingHours += Number(h));
 	const average: number = totalTrainingHours / periodLength;
 	const success: boolean = average >= target ? true : false;
 	let rating: number = 0;
@@ -32,7 +32,7 @@ const calculateExercises = (dailyHours: Array<number>, target: number): exercise
 	return {
 		periodLength: periodLength,
 		trainingDays: trainingDays,
-		target: target,
+		target: Number(target),
 		average: average,
 		success: success,
 		rating: rating,
@@ -40,7 +40,7 @@ const calculateExercises = (dailyHours: Array<number>, target: number): exercise
 	}
 }
 
-
+/*
 try {
 	//GET DATA FROM COMMAND LINE
 	const inputTarget: number = Number(process.argv[2]);
@@ -65,3 +65,4 @@ try {
 } catch (error) {
 	console.log('Something bad happened: ', error);
 }
+*/
