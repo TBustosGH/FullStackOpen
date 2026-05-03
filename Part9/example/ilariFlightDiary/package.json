@@ -1,0 +1,26 @@
+{
+  "name": "ilariflightdiary",
+  "version": "1.0.0",
+  "description": "",
+  "license": "ISC",
+  "author": "TBustos",
+  "type": "commonjs",
+  "main": "index.js",
+  "scripts": {
+    "tsc": "tsc",
+    "dev": "ts-node-dev index.ts",
+    "lint": "echo eslint bad configured!",
+    "start": "node build/index.js"
+  },
+  "devDependencies": {
+    "@types/express": "^5.0.6",
+    "@typescript-eslint/eslint-plugin": "^8.59.1",
+    "@typescript-eslint/parser": "^8.59.1",
+    "eslint": "^10.3.0",
+    "ts-node-dev": "^2.0.0",
+    "typescript": "^6.0.3"
+  },
+  "dependencies": {
+    "express": "^5.2.1"
+  }
+}

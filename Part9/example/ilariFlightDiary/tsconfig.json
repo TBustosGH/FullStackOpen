@@ -1,0 +1,13 @@
+{
+  "compilerOptions": {
+    "target": "es6",    //which version of ECMAScript should the compiler use
+    "outDir": "./build/",   //where should the compiler save the compiled code
+    "module": "commonjs",   //we want to use the commonjs modules in the compiled code, for compatibility reasons
+    "strict": true,  //a shot term for noImplicitAny, noImplicitThis, alwaysStrict, strictBindCallApply, strictNullChecks, strictFunctionTypes & strictPropertyInitialization
+    "noUnusedLocals": true, //prevent unused variables
+    "noUnusedParameters": true, //throws an error when there's an unused parameter in a function
+    "noImplicitReturns": true,  //there should be always a return value for a function
+    "noFallthroughCasesInSwitch": true, //there should be always a return or break value for every case in a switch
+    "esModuleInterop": true
+  }
+}
