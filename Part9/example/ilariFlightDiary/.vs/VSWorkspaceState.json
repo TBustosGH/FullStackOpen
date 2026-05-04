@@ -2,8 +2,8 @@
   "ExpandedNodes": [
     "",
     "\\src",
-    "\\src\\routes"
+    "\\src\\services"
   ],
-  "SelectedNode": "\\src\\routes\\diaries.ts",
+  "SelectedNode": "\\src\\index.ts",
   "PreviewInSolutionExplorer": false
 }

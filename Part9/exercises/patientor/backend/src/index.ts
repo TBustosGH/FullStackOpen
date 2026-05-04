@@ -2,9 +2,14 @@ import express from 'express';
 const app = express();
 app.use(express.json());
 
+//Routes
+import diagnosisRouter from './routes/diagnoses';
+
 app.get('/api/ping/', (_req, res) => {
     res.send('pong');
 });
+
+app.use('/api/diagnoses', diagnosisRouter);
 
 const PORT = 3001;
 
