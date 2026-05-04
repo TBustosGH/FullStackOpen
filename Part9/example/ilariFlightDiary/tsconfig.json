@@ -8,6 +8,7 @@
     "noUnusedParameters": true, //throws an error when there's an unused parameter in a function
     "noImplicitReturns": true,  //there should be always a return value for a function
     "noFallthroughCasesInSwitch": true, //there should be always a return or break value for every case in a switch
-    "esModuleInterop": true
+    "esModuleInterop": true,
+    "resolveJsonModule": true
   }
 }
