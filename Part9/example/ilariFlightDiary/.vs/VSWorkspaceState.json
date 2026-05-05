@@ -2,10 +2,8 @@
   "ExpandedNodes": [
     "",
     "\\data",
-    "\\src",
-    "\\src\\routes",
-    "\\src\\services"
+    "\\src"
   ],
-  "SelectedNode": "\\src\\services\\diaryService.ts",
+  "SelectedNode": "\\data\\entries.ts",
   "PreviewInSolutionExplorer": false
 }

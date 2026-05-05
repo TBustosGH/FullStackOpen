@@ -1,10 +1,8 @@
 {
   "ExpandedNodes": [
     "",
-    "\\data",
-    "\\src",
-    "\\src\\services"
+    "\\src"
   ],
-  "SelectedNode": "\\data\\diagnoses.ts",
+  "SelectedNode": "\\src\\index.ts",
   "PreviewInSolutionExplorer": false
 }
