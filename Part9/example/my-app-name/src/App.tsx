@@ -1,7 +1,9 @@
-import type { CoursePart } from './types';
+import { useState } from 'react';
+//types
+import type { CoursePart, Note } from './types';
 
 //App
-const App = () => {
+/*const App = () => {
     const courseName = 'Half Stack application development';
     const courseParts: CoursePart[] = [
         {
@@ -62,6 +64,43 @@ const App = () => {
             </div>
         </div>
     );
-}
+};*/
+
+
+const App = () => {
+    const [newNote, setNewNote] = useState('');
+    const [notes, setNotes] = useState<Note[]>([
+        { id: 1, content: 'testing '}
+    ]);
+
+
+    const noteCreation = (event: React.SyntheticEvent) => {
+        event.preventDefault();
+        const noteToAdd = {
+            content: newNote,
+            id: notes.length + 1
+        };
+        setNotes(notes.concat(noteToAdd));
+        setNewNote('');
+    };
+
+    return (
+        <div>
+            <form onSubmit={noteCreation}>
+                <input
+                    value={newNote}
+                    onChange={(event) => setNewNote(event.target.value)}
+                    required
+                />
+                <button type='submit'>add</button>
+            </form>
+            <ul>
+                {notes.map(note => 
+                    <li key={note.id}>{note.content}</li>
+                )}
+            </ul>
+        </div>
+    );
+};
 
 export default App

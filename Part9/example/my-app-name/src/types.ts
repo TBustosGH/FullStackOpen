@@ -1,3 +1,4 @@
+//course parts
 interface CoursePartBase {
     name: string;
     exerciseCount: number;
@@ -20,3 +21,9 @@ interface CoursePartBackground extends CoursePartBase {
 }
 
 export type CoursePart = CoursePartBasic | CoursePartGroup | CoursePartBackground;
+
+//notes
+export interface Note {
+    id: number;
+    content: string;
+}
