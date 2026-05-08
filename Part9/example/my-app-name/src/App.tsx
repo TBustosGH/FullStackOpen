@@ -32,7 +32,7 @@ const App = () => {
     ];
 
     //detect unhandled data types
-    const asserNever = (value: never): never => {
+    const assertNever = (value: never): never => {
         throw new Error(
             `Unhandled descriminated union member: ${JSON.stringify(value)}`
         );
@@ -50,7 +50,7 @@ const App = () => {
                 console.log(part.name, part.description, part.backgroundMaterial);
                 break;
             default:
-                return asserNever(part);    //unhandled data type detected, throw an error
+                return assertNever(part);    //unhandled data type detected, throw an error
         }   
     });
 
