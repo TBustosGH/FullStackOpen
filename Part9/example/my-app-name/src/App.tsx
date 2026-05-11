@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react';
-import axios from 'axios';
 //types
 import type { Note } from './types';
 //note services
