@@ -4,15 +4,16 @@ import { getAllEntries } from './services/diaryServices';
 //types
 import type { DiaryEntry } from './types';
 //components
-import Notes from './components/notes';
+import EntryForm from './components/EntryForm';
+import Entries from './components/Entries';
 
 const App = () => {
-    const [notes, setNotes] = useState<DiaryEntry[]>([]);
+    const [diaryEntries, setDiaryEntries] = useState<DiaryEntry[]>([]);
 
     useEffect(() => {
         const getEntries = async () => {
             const data = await getAllEntries();
-            setNotes(data);
+            setDiaryEntries(data);
         }
         getEntries();
     }, []);
@@ -20,7 +21,8 @@ const App = () => {
 
     return (
         <div>
-            <Notes entries={notes} />
+            <EntryForm />
+            <Entries entries={diaryEntries} />
         </div>
     );
 };

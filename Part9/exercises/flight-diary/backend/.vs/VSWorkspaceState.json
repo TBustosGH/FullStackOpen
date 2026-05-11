@@ -2,8 +2,10 @@
   "ExpandedNodes": [
     "",
     "\\data",
-    "\\src"
+    "\\src",
+    "\\src\\routes",
+    "\\src\\services"
   ],
-  "SelectedNode": "\\tsconfig.json",
+  "SelectedNode": "\\src\\utils.ts",
   "PreviewInSolutionExplorer": false
 }

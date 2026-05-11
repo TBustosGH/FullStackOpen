@@ -1,13 +1,15 @@
-type Weather = 'sunny' | 'rainy' | 'cloudy' | 'stormy' | 'windy';
+export type Weather = 'sunny' | 'rainy' | 'cloudy' | 'stormy' | 'windy';
 
-type Visibility = 'great' | 'good' | 'ok' | 'poor';
+export type Visibility = 'great' | 'good' | 'ok' | 'poor';
 
 export interface DiaryEntry {
     id: number;
     date: string;
     weather: Weather;
-    Visibility: Visibility;
+    visibility: Visibility;
     comment?: string;
 };
 
 export type NonSensitiveDiaryEntry = Omit<DiaryEntry, 'comment'>;
+
+export type NewDiaryEntry = Omit<DiaryEntry, 'id'>;

@@ -1,10 +1,10 @@
 import type { DiaryEntry } from '../types';
 
-interface NotesProps {
+interface EntriesProps {
     entries: DiaryEntry[]
 }
 
-const Notes = (props: NotesProps) => {
+const Entries = (props: EntriesProps) => {
     return (
         <div>
             <h2>Diary entries</h2>
@@ -13,9 +13,9 @@ const Notes = (props: NotesProps) => {
             ? <p>No entries available!</p>
             : <div> 
                 {props.entries.map(entrie =>
-                    <div>
+                    <div key={entrie.date}>
                         <h3>{entrie.date}</h3>
-                        <p>Visibility: {entrie.Visibility}</p>
+                        <p>Visibility: {entrie.visibility}</p>
                         <p>Weather: {entrie.weather}</p>
                     </div>
                 )}
@@ -25,4 +25,4 @@ const Notes = (props: NotesProps) => {
     )
 };
 
-export default Notes;
+export default Entries;
