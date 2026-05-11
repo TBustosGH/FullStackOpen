@@ -1,8 +1,9 @@
 {
   "ExpandedNodes": [
     "",
-    "\\src"
+    "\\src",
+    "\\src\\services"
   ],
-  "SelectedNode": "\\src\\types.ts",
+  "SelectedNode": "\\src\\services\\noteServices.ts",
   "PreviewInSolutionExplorer": false
 }
