@@ -16,5 +16,10 @@ export const addNewEntry = async (object: NewDiaryEntry ) => {
     }
     const response = await fetch(baseUrl, config);
     const addedEntry = await response.json();
+
+    if (addedEntry.Error) {
+       throw new Error(addedEntry.Error);
+    }
+
     return await addedEntry;
 };

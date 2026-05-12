@@ -1,32 +1,59 @@
 import { useState } from 'react';
 
 import { addNewEntry } from '../services/diaryServices';
-import type { NewDiaryEntry, Visibility, Weather } from '../types';
+import type { NewDiaryEntry, DiaryEntry, Visibility, VisibilityInput, Weather, WeatherInput } from '../types';
 
-const EntryForm = () => {
+interface EntryFormProps {
+    diaryState: DiaryEntry[]
+    setDiaryState: React.Dispatch<React.SetStateAction<DiaryEntry[]>>;
+};
+
+const EntryForm = (props: EntryFormProps) => {
     const [dateField, setDateField] = useState('');
-    const [visibilityField, setVisibilityField] = useState<Visibility>('');
-    const [weatherField, setWeatherField] = useState<Weather>('');
+    const [visibilityField, setVisibilityField] = useState<VisibilityInput>('');
+    const [weatherField, setWeatherField] = useState<WeatherInput>('');
     const [commentField, setCommentField] = useState('');
+
+    const [errorMessage, setErrorMessage] = useState(null);
 
     const handleSubmit = async (event: React.SyntheticEvent) => {
         event.preventDefault();
 
         const newEntry: NewDiaryEntry = {
             date: dateField,
-            weather: weatherField,
-            visibility: visibilityField,
+            weather: weatherField as Weather,
+            visibility: visibilityField as Visibility,
             comment: commentField
         }
 
-        const addedEntry = await addNewEntry(newEntry);
-        console.log(addedEntry);
+        try {
+            //call addNewEntry function to make a post to the backend
+            const addedEntry = await addNewEntry(newEntry);
+            //add addedEntry to the current state
+            props.setDiaryState(props.diaryState.concat(addedEntry));
+            //reset input
+            setDateField('');
+            setVisibilityField('');
+            setWeatherField('');
+            setCommentField('');
+        } catch (error) {
+            let message = 'Error: ';   //start errorMessage
+            if (error instanceof Error) {
+                message += error.message;  //add the actual error message
+            }
+            //set errorMessage 
+            setErrorMessage(message);
+            //reset errorMessage state after 5 seconds
+            setTimeout(() => {
+                setErrorMessage(null);
+            }, 5000);
+        }
     }
 
     return (
         <div>
             <h2>Add new entry</h2>
-
+            <p style={{ color: 'red' }}>{errorMessage}</p>
             <form onSubmit={handleSubmit}>
                 <div>
                     date:

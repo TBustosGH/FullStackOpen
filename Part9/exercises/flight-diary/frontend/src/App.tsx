@@ -21,7 +21,7 @@ const App = () => {
 
     return (
         <div>
-            <EntryForm />
+            <EntryForm diaryState={diaryEntries} setDiaryState={setDiaryEntries} />
             <Entries entries={diaryEntries} />
         </div>
     );
