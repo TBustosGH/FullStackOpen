@@ -1,7 +1,7 @@
 import { useState } from 'react';
 
 import { addNewEntry } from '../services/diaryServices';
-import type { NewDiaryEntry, DiaryEntry, Visibility, VisibilityInput, Weather, WeatherInput } from '../types';
+import type { NewDiaryEntry, DiaryEntry, Visibility, Weather } from '../types';
 
 interface EntryFormProps {
     diaryState: DiaryEntry[]
@@ -10,8 +10,8 @@ interface EntryFormProps {
 
 const EntryForm = (props: EntryFormProps) => {
     const [dateField, setDateField] = useState('');
-    const [visibilityField, setVisibilityField] = useState<VisibilityInput>('');
-    const [weatherField, setWeatherField] = useState<WeatherInput>('');
+    const [visibilityField, setVisibilityField] = useState<Visibility>('great');
+    const [weatherField, setWeatherField] = useState<Weather>('sunny');
     const [commentField, setCommentField] = useState('');
 
     const [errorMessage, setErrorMessage] = useState(null);
@@ -21,8 +21,8 @@ const EntryForm = (props: EntryFormProps) => {
 
         const newEntry: NewDiaryEntry = {
             date: dateField,
-            weather: weatherField as Weather,
-            visibility: visibilityField as Visibility,
+            weather: weatherField,
+            visibility: visibilityField,
             comment: commentField
         }
 
@@ -33,8 +33,8 @@ const EntryForm = (props: EntryFormProps) => {
             props.setDiaryState(props.diaryState.concat(addedEntry));
             //reset input
             setDateField('');
-            setVisibilityField('');
-            setWeatherField('');
+            setVisibilityField('great');
+            setWeatherField('sunny');
             setCommentField('');
         } catch (error) {
             let message = 'Error: ';   //start errorMessage
@@ -66,21 +66,18 @@ const EntryForm = (props: EntryFormProps) => {
                 </div>
                 <div>
                     Visibility:
-                    <input
-                        type='text'
-                        value={visibilityField}
-                        onChange={({ target }) => setVisibilityField(target.value)}
-                        required
-                    />
+                    great   <input type='radio' name='visibility' onChange={() => setVisibilityField('great')} defaultChecked/>
+                    good    <input type='radio' name='visibility' onChange={() => setVisibilityField('good')} />
+                    ok      <input type='radio' name='visibility' onChange={() => setVisibilityField('ok')} />
+                    poor    <input type='radio' name='visibility' onChange={() => setVisibilityField('poor')} />
                 </div>
                 <div>
                     Weather:
-                    <input
-                        type='text'
-                        value={weatherField}
-                        onChange={({ target }) => setWeatherField(target.value)}
-                        required
-                    />
+                    sunny   <input type='radio' name='weather' onChange={() => setWeatherField('sunny')} defaultChecked/>
+                    rainy   <input type='radio' name='weather' onChange={() => setWeatherField('rainy')} />
+                    cloudy  <input type='radio' name='weather' onChange={() => setWeatherField('cloudy')} />
+                    stormy  <input type='radio' name='weather' onChange={() => setWeatherField('stormy')} />
+                    windy   <input type='radio' name='weather' onChange={() => setWeatherField('windy')} />
                 </div>
                 <div>
                     comment:
