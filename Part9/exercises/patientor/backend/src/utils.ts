@@ -13,6 +13,7 @@ const isGender = (param: string): param is Gender => {
     return Object.values(Gender).map(v => v.toString()).includes(param);
 };
 
+
 //parse fields
 const parseName = (name: unknown): string => {
     if (!name || !isString(name)) {
