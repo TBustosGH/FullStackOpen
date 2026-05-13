@@ -19,4 +19,6 @@ export interface Patient {
   dateOfBirth?: string;
 }
 
+export type FoundPatient = Patient | null;
+
 export type PatientFormValues = Omit<Patient, "id" | "entries">;

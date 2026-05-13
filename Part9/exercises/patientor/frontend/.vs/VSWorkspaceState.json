@@ -1,8 +1,12 @@
 {
   "ExpandedNodes": [
     "",
-    "\\src"
+    "\\src",
+    "\\src\\components",
+    "\\src\\components\\PatientListPage",
+    "\\src\\components\\PatientPage",
+    "\\src\\services"
   ],
-  "SelectedNode": "\\src\\types.ts",
+  "SelectedNode": "\\src\\components\\PatientListPage\\index.tsx",
   "PreviewInSolutionExplorer": false
 }

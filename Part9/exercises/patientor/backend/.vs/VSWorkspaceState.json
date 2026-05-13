@@ -3,9 +3,7 @@
     "",
     "\\data",
     "\\src",
-    "\\src\\routes",
-    "\\src\\services"
+    "\\src\\routes"
   ],
-  "SelectedNode": "\\data\\patients.ts",
   "PreviewInSolutionExplorer": false
 }
