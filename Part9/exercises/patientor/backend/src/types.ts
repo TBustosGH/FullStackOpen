@@ -26,15 +26,33 @@ export enum HealthCheckRating {
     'CriticalRisk' = 3
 }
 
-interface HealtCheckEntry extends BaseEntryPatient {
+export interface HealtCheckEntry extends BaseEntryPatient {
     type: 'HealthCheck';
     healthCheckRating: HealthCheckRating;
 }
 
-// eslint-disable-next-lint @typescript-eslint/no-empty-interface
-export interface Entry {
-
+interface SickLeave {
+    startDate: Date | string;
+    endDate: Date | string;
 }
+
+export interface OccupationalHealthCareEntry extends BaseEntryPatient {
+    type: 'OccupationalHealthcare';
+    employerName: string;
+    sickLeave?:  SickLeave;
+}
+
+interface Discharge {
+    date: Date | string;
+    criteria: string
+}
+
+export interface HospitalEntry extends BaseEntryPatient {
+    type: 'Hospital';
+    discharge: Discharge
+}
+
+export type Entry = HealtCheckEntry | OccupationalHealthCareEntry | HospitalEntry;
 
 export interface TypePatient {
     id: string;

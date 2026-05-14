@@ -1,4 +1,4 @@
-import type { TypePatient } from '../src/types.ts';
+import type { TypePatient, Gender } from '../src/types.ts';
 
 const patients: TypePatient[] = [
     {
@@ -6,7 +6,7 @@ const patients: TypePatient[] = [
         name: 'John McClane',
         dateOfBirth: '1986-07-09',
         ssn: '090786-122X',
-        gender: 'male',
+        gender: 'male' as Gender,
         occupation: 'New york city cop',
         entries: [
             {
@@ -29,7 +29,7 @@ const patients: TypePatient[] = [
         name: 'Martin Riggs',
         dateOfBirth: '1979-01-30',
         ssn: '300179-777A',
-        gender: "male",
+        gender: "male" as Gender,
         occupation: 'Cop',
         entries: [
             {
@@ -53,7 +53,7 @@ const patients: TypePatient[] = [
         name: 'Hans Gruber',
         dateOfBirth: '1970-04-25',
         ssn: '250470-555L',
-        gender: "other",
+        gender: "other" as Gender,
         occupation: 'Technician',
         entries: [],
     },
@@ -62,7 +62,7 @@ const patients: TypePatient[] = [
         name: 'Dana Scully',
         dateOfBirth: '1974-01-05',
         ssn: '050174-432N',
-        gender: "female",
+        gender: "female" as Gender,
         occupation: 'Forensic Pathologist',
         entries: [
             {
@@ -97,7 +97,7 @@ const patients: TypePatient[] = [
         name: 'Matti Luukkainen',
         dateOfBirth: '1971-04-09',
         ssn: '090471-8890',
-        gender: "male",
+        gender: "male" as Gender,
         occupation: 'Digital evangelist',
         entries: [
             {

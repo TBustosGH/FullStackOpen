@@ -1,9 +1,7 @@
 {
   "ExpandedNodes": [
     "",
-    "\\data",
-    "\\src",
-    "\\src\\routes"
+    "\\src"
   ],
   "SelectedNode": "\\src\\types.ts",
   "PreviewInSolutionExplorer": false
