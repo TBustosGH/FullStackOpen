@@ -57,11 +57,11 @@ export type Entry = HealtCheckEntry | OccupationalHealthCareEntry | HospitalEntr
 export interface TypePatient {
     id: string;
     name: string;
-    dateOfBirth: string;
-    ssn: string;
+    dateOfBirth?: string;
+    ssn?: string;
     gender: Gender; 
     occupation: string;
-    entries: Entry[];
+    entries?: Entry[];
 }
 
 export type NonSensitivePatient = Omit<TypePatient, 'ssn' | 'entries'>;
