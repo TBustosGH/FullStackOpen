@@ -1,14 +1,16 @@
 export interface Diagnosis {
-  code: string;
-  name: string;
-  latin?: string;
+    code: string;
+    name: string;
+    latin?: string;
 }
+
+export type Diagnoses = Diagnosis[] | null;
 
 //patients
 export enum Gender {
-  Male = "male",
-  Female = "female",
-  Other = "other"
+    Male = "male",
+    Female = "female",
+    Other = "other"
 }
 
 interface BaseEntryPatient {
@@ -55,13 +57,13 @@ export interface HospitalEntry extends BaseEntryPatient {
 export type Entry = HealtCheckEntry | OccupationalHealthCareEntry | HospitalEntry;
 
 export interface Patient {
-  id: string;
-  name: string;
-  occupation: string;
-  gender: Gender;
-  ssn?: string;
-  dateOfBirth?: string;
-  entries?: Entry[]
+    id: string;
+    name: string;
+    occupation: string;
+    gender: Gender;
+    ssn?: string;
+    dateOfBirth?: string;
+    entries: Entry[]
 }
 
 export type FoundPatient = Patient | null;
