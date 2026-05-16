@@ -45,7 +45,7 @@ const patients: TypePatient[] = [
                     startDate: '2019-08-05',
                     endDate: '2019-08-28',
                 },
-            },
+            }
         ],
     },
     {

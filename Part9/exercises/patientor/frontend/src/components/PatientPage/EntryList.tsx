@@ -1,6 +1,9 @@
 import { SetStateAction, useEffect, useState } from 'react';
-
+//types
 import type { Patient, Diagnoses} from '../../types';
+//components
+import EntryDetails from './EntryDetails';
+
 
 interface EntryListProps {
     patient: Patient;
@@ -9,6 +12,7 @@ interface EntryListProps {
 
 const EntryList = ({ patient, diagnoses }: EntryListProps) => {
     const [patientDiagnoses, setPatientDiagnoses] = useState<Diagnoses>(null);
+    
     const filterDiagnoses = () => {
         if (!diagnoses || !patient || patient.entries?.length === 0) {
             return null;
@@ -48,7 +52,7 @@ const EntryList = ({ patient, diagnoses }: EntryListProps) => {
                 ?<div>
                     {patient.entries.map(entry => (
                         <div key={entry.id}>
-                            <p key={entry.id}>{entry.date} {entry.description}</p>
+                            <EntryDetails entry={entry} />
                             <ul>
                                 {patientDiagnoses?.map(diagnosis =>
                                     <li key={diagnosis.code}>
