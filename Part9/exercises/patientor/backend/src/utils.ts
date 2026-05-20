@@ -15,6 +15,7 @@ const isGender = (param: string): param is Gender => {
 
 
 //parse fields
+//PATIENT
 const parseName = (name: unknown): string => {
     if (!name || !isString(name)) {
         throw new Error('Incorrect or missing name');
@@ -50,8 +51,9 @@ const parseOccupation = (occupation: unknown): string => {
     return occupation;
 };
 
+
 //validate the new patient object
-const toNewPatient = (object: unknown): TypeNewPatient => {
+export const toNewPatient = (object: unknown): TypeNewPatient => {
     if (!object || typeof object !== 'object') {
         throw new Error('Incorrect or missing data');
     }
@@ -68,5 +70,3 @@ const toNewPatient = (object: unknown): TypeNewPatient => {
     }
     throw new Error('Incorrect data: some fields are missing');
 };
-
-export default toNewPatient;

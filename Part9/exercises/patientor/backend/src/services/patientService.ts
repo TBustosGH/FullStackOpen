@@ -36,6 +36,7 @@ const addPatient = (patient: TypeNewPatient): TypePatient => {
     return newPatient;
 }
 
+
 export default {
     getPatients,
     getPatientById,
