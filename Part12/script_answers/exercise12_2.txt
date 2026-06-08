@@ -1,0 +1,18 @@
+Script started on 2026-05-24 18:22:48+00:00 [TERM="xterm" TTY="/dev/pts/0" COLUMNS="120" LINES="30"]
+# mkdir usr
+mkdir: usr: File exists
+# dir
+bin  boot  dev  etc  home  lib  lib64  media  mnt  opt  proc  root  run  sbin  srv  sys  tmp  typescript  usr  var
+# cd usr
+# dir
+bin  games  include  lib  lib64  libexec  local  sbin  share  src
+# cd src
+# mkdir app
+# cd app
+# dir
+# help
+sh: 9: help: not found
+# touch index.js
+# dir
+index.js
+# exit
